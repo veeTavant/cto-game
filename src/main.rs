@@ -9,12 +9,27 @@ pub mod employee;
 use crate::employee::Employee;
 use crate::employee::EmployeeType;
 
-use chrono::{Utc, Local};
+use chrono::{Local};
+
+fn build_company(_employees: &mut HashMap<&str, &Employee>) {
+  
+  let user1 = Employee {
+    _type: EmployeeType::Developer,
+    _name: "Richard".to_string(),
+    _age: 50,
+    _efficiency: 100,
+    _salary: 250,
+    _talent: 100
+  };
+
+//  _employees.insert("string", &user1);
+
+}
 
 fn main() {
-  let window = initscr();
 
   let mut employees = HashMap::new();
+  build_company(&mut employees);
 
   let user1 = Employee {
     _type: EmployeeType::Developer,
@@ -25,18 +40,15 @@ fn main() {
     _talent: 100
   };
 
-  employees.insert(
-    user1._name.to_string(),
-    user1
-  );
+  employees.insert("string", &user1);
 
+  let window = initscr();
 
-  let mut r = window.get_max_y() - 4;
-  let mut c = window.get_max_x() - 4;
-
-  let mut outputYString: String = "Y max".to_owned();
-  let mut yMaxString: String = r.to_string().to_owned();
-  outputYString.push_str(&yMaxString);
+  //let r = window.get_max_y() - 4;
+  //let c = window.get_max_x() - 4;
+  //let mut output_y_string: String = "Y max".to_owned();
+  //let mut y_max_string: String = r.to_string().to_owned();
+  //output_y_string.push_str(&y_max_string);
 
 
   window.mvaddstr(1, 0, "Employees:");
@@ -52,8 +64,8 @@ fn main() {
   window.keypad(true);
   noecho();
 
-  let mut quitting : bool = false;
-  let mut commandString : String = String::new();
+  //let mut quitting : bool = false;
+  let command_string : String = String::new();
 
   loop {
       match window.getch() {
@@ -61,8 +73,8 @@ fn main() {
               
             // Check for escape
             if c == '\u{1b}' {
-              quitting = true;
-              commandString = String::from("QUITTING");
+              //quitting = true;
+              //command_string = String::from("QUITTING");
               break;
             }
             window.addch(c);
@@ -76,21 +88,21 @@ fn main() {
           None => (),
       }
 
-      let formattedTime = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
+      let format_time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
 
       // Update time and zap to CMD prompt
       //
-      window.mvaddstr(0, window.get_max_x() - 20, formattedTime);
+      window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
-      if quitting {
-        window.mvaddstr(window.get_max_y() - 1 , 0, "CLOSING");
-      } else {
+      //if quitting == true {
+      //  window.mvaddstr(window.get_max_y() - 1 , 0, "CLOSING");
+      //} else {
         
         let mut owned_string: String = "CMD> ".to_owned();
-        owned_string.push_str(&commandString);
+        owned_string.push_str(&command_string);
 
         window.mvaddstr( window.get_max_y() - 1 , 0, owned_string);
-      }
+      //}
       
       window.refresh();
 
