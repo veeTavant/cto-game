@@ -1,0 +1,9 @@
+[package]
+name = "cto-game"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+pancurses = "0.17"
+rand = "0.5"
+chrono = "0.4"
