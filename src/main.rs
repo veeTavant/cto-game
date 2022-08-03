@@ -1,6 +1,7 @@
 // https://github.com/ihalila/pancurses
 //
 extern crate pancurses;
+//use chrono::format::Numeric;
 use pancurses::*;
 
 use std::collections::HashMap;
@@ -11,18 +12,53 @@ use crate::employee::EmployeeType;
 
 use chrono::{Local};
 
-fn build_company(_employees: &mut HashMap<&str, &Employee>) {
-  
-  let user1 = Employee {
-    _type: EmployeeType::Developer,
-    _name: "Richard".to_string(),
-    _age: 50,
-    _efficiency: 100,
-    _salary: 250,
-    _talent: 100
-  };
 
-//  _employees.insert("string", &user1);
+
+/*
+fn boxed_employee() -> Box<Employee> {
+
+  return Box::new(Employee { _type: EmployeeType::Administrator, _name: "CTO".to_string(), 
+  _age: 48,
+  _salary: 100,
+  _efficiency: 250,
+  _talent: 100 });
+
+}
+*/
+
+fn build_company(_employees: &mut HashMap<&str, Box<Employee>>) {
+  
+  let dev1 = Box::new(Employee {
+    _type: EmployeeType::Developer,
+    _name: "Developer 1".to_string(),
+    _age: 50,
+    _efficiency: 90,
+    _salary: 200,
+    _talent: 90
+  });
+
+  let dev2 = Box::new(Employee {
+    _type: EmployeeType::Developer,
+    _name: "Developer 2".to_string(),
+    _age: 23,
+    _efficiency: 35,
+    _salary: 89,
+    _talent: 77
+  });
+
+  let dev3 = Box::new(Employee {
+    _type: EmployeeType::Developer,
+    _name: "Developer 3".to_string(),
+    _age: 30,
+    _efficiency: 70,
+    _salary: 100,
+    _talent: 85
+  });
+
+//  let boxed_employee = boxed_employee();
+  _employees.insert("Developer 1", dev1);
+  _employees.insert("Developer 2", dev2);
+  _employees.insert("Developer 3", dev3);
 
 }
 
@@ -31,24 +67,15 @@ fn main() {
   let mut employees = HashMap::new();
   build_company(&mut employees);
 
-  let user1 = Employee {
-    _type: EmployeeType::Developer,
-    _name: "Richard".to_string(),
-    _age: 50,
-    _efficiency: 100,
-    _salary: 250,
-    _talent: 100
-  };
-
-  employees.insert("string", &user1);
-
   let window = initscr();
 
-  //let r = window.get_max_y() - 4;
-  //let c = window.get_max_x() - 4;
-  //let mut output_y_string: String = "Y max".to_owned();
-  //let mut y_max_string: String = r.to_string().to_owned();
-  //output_y_string.push_str(&y_max_string);
+  let number_of_employees = employees.keys().len().to_string();
+  window.mvaddstr(1, 20, number_of_employees);
+
+  // Count developers
+  //for employee in &employees {
+   // if &employee.ref._
+  //}
 
 
   window.mvaddstr(1, 0, "Employees:");
@@ -64,7 +91,6 @@ fn main() {
   window.keypad(true);
   noecho();
 
-  //let mut quitting : bool = false;
   let command_string : String = String::new();
 
   loop {
@@ -94,15 +120,10 @@ fn main() {
       //
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
-      //if quitting == true {
-      //  window.mvaddstr(window.get_max_y() - 1 , 0, "CLOSING");
-      //} else {
-        
-        let mut owned_string: String = "CMD> ".to_owned();
-        owned_string.push_str(&command_string);
+      let mut owned_string: String = "CMD> ".to_owned();
+      owned_string.push_str(&command_string);
 
-        window.mvaddstr( window.get_max_y() - 1 , 0, owned_string);
-      //}
+      window.mvaddstr( window.get_max_y() - 1 , 0, owned_string);
       
       window.refresh();
 

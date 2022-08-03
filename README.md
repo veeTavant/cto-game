@@ -5,3 +5,25 @@
 Can you become the most successful software company in history?
 
 Let's see your CTO chops!
+
+
+# Installation and Running
+
+Get Rust and install as per:
+
+https://www.rust-lang.org/tools/install
+
+If you have the gh command line tools:
+
+$ gh repo clone bownie/cto-game
+
+or
+
+$ git clone https://github.com/bownie/cto-game.git
+
+Then:
+
+$ cd cto-game
+
+$ cargo run
+
