@@ -6,14 +6,34 @@ trait Learn {
     fn learn(&self);
 }
 
+// Structure
+//
+//                            CEO
+//                             |
+//      CTO            CFO            CPO            CMO
+//       |              |              |              |
+//    Developer     Accountant   Product Owner     Marketeer
+//     Tester       Salesperson  Product Manager
+//  Administrator 
+//
+//
+#[derive(Debug, PartialEq, Eq)]
 pub enum EmployeeType {
     Developer,
     Tester,
     ProductOwner,
     ProductManager,
     Administrator,
-    CTO
+    CTO,
+    Marketeer,
+    Salesperson,
+    CEO,
+    FinaceDirector,
+    CMO,
+    CPO,
+    Accountant
 }
+
 
 pub struct Employee {
     pub _type: EmployeeType,
