@@ -6,6 +6,7 @@ use pancurses::*;
 
 use std::char::ToUppercase;
 use std::collections::HashMap;
+use std::convert::TryInto;
 
 pub mod employee;
 pub mod software;
@@ -58,14 +59,12 @@ fn build_company(_employees: &mut HashMap<&str, Box<Employee>>) {
 
 fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
-  _window.mvaddstr(1, 0, "Employees:");
-  _window.mvaddstr(2, 0, "Developers:");
-  _window.mvaddstr(3, 0, "Testers:");
-  _window.mvaddstr(4, 0, "Administrators:");
-  _window.mvaddstr(5, 0, "Marketers:");
-  _window.mvaddstr(6, 0, "Salespeople:");
-
-
+  _window.mvaddstr(1, 1, "Employees:");
+  _window.mvaddstr(2, 1, "Developers:");
+  _window.mvaddstr(3, 1, "Testers:");
+  _window.mvaddstr(4, 1, "Administrators:");
+  _window.mvaddstr(5, 1, "Marketers:");
+  _window.mvaddstr(6, 1, "Salespeople:");
 
   let mut developers = 0;
   let mut testers = 0;
@@ -115,6 +114,49 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
   _window.mvaddstr(5, second_column_results_pos, _software._age_of_code.to_string());
   _window.mvaddstr(6, second_column_results_pos, _software._complexity_of_code.to_string());
 
+
+  // World
+  //
+
+  _window.mvaddstr(_window.get_max_y() - 6, 1, "Global Economony:");
+  _window.mvaddstr(_window.get_max_y() - 5, 1, "Competition:");
+  _window.mvaddstr(_window.get_max_y() - 4, 1, "Job Market:");
+  _window.mvaddstr(_window.get_max_y() - 3, 1, "Speed Factor:");
+
+  _window.mvaddstr(_window.get_max_y() - 6, second_column_pos, "Game Frame:");
+  _window.mvaddstr(_window.get_max_y() - 7, second_column_pos, "Game Time:");
+  
+
+
+  _window.mvaddstr(_window.get_max_y() - 6, first_column_results_pos, _world._global_economic_factors.to_string());
+  _window.mvaddstr(_window.get_max_y() - 5, first_column_results_pos, _world._competition_in_market.to_string());
+  _window.mvaddstr(_window.get_max_y() - 4, first_column_results_pos, _world._job_market.to_string());
+  _window.mvaddstr(_window.get_max_y() - 3, first_column_results_pos, _world._speed.to_string());
+
+  _window.mvaddstr(_window.get_max_y() - 6, second_column_results_pos, _world._game_ticks.to_string());
+  _window.mvaddstr(_window.get_max_y() - 7, second_column_results_pos, _world.get_game_elapse_time().to_string());
+
+}
+
+fn draw_matrix_workface(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
+
+  let min_x  = _window.get_max_x() / 2 - _window.get_max_x() / 4;
+  let max_x  = _window.get_max_x() / 2 + _window.get_max_x() / 4;
+  let min_y = 8;
+  let max_y = min_y + 20;
+
+  let horiz_string = std::iter::repeat("-").take((1 + _window.get_max_x() / 2) as usize).collect::<String>();
+  let horiz_string_2 = horiz_string.clone();
+  _window.mvaddstr(min_y, min_x, horiz_string );
+  _window.mvaddstr(max_y, min_x, horiz_string_2 );
+
+  // Box it out
+  //
+  for y_pos in min_y + 1 ..max_y {
+    _window.mvaddch(y_pos, min_x, '|');
+    _window.mvaddch(y_pos, max_x, '|');
+  } 
+
 }
 
 fn main() {
@@ -128,12 +170,18 @@ fn main() {
     _complexity_of_code: 0
   });
 
-  let world: Box<World> = Box::new(World {
-    _competition_in_market: 0,
-    _global_economic_factors: 0,
-    _job_market: 0
+  let mut world: Box<World> = Box::new(World {
+    _competition_in_market: 100,
+    _global_economic_factors: 100,
+    _job_market: 100,
+    _speed: 100,
+    _game_ticks: 0,
+    _last_tick_time: Local::now(),
+    _game_start_time: Local::now()
   });
 
+//  let mut world2 = World(100, 100, 100, 100, 0);
+ 
   let company: Box<Company> = Box::new(Company {
     _cash_in_bank: 1000000,
     _cost_of_service_per_month: 30,
@@ -145,19 +193,21 @@ fn main() {
   let window = initscr();
 
   draw_hud(&employees, &company, &software, &world, &window);
+  draw_matrix_workface(&employees, &company, &software, &world, &window);
 
   curs_set(0);
-
   window.refresh();
 
   // set non-blocking mode
   //
-  window.timeout(100);
+  window.timeout(world._speed as i32);
   window.keypad(true);
   noecho();
 
   let command_string : String = String::new();
 
+  // Store game time
+  //
   loop {
       match window.getch() {
           Some(Input::Character(c)) => {
@@ -169,7 +219,6 @@ fn main() {
               break;
             }
             window.addch(c);
-
 
           }
           Some(Input::KeyDC) => break,
@@ -183,6 +232,12 @@ fn main() {
       //
       let format_time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
+
+      if (Local::now() > world._last_tick_time) {
+        world.increment_game_ticks();
+        world.set_current_time(Local::now());
+        draw_hud(&employees, &company, &software, &world, &window);
+      }
 
       // CMD prompt
       //
