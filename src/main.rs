@@ -4,9 +4,9 @@ extern crate pancurses;
 //use chrono::format::Numeric;
 use pancurses::*;
 
-use std::char::ToUppercase;
+//use std::char::ToUppercase;
 use std::collections::HashMap;
-use std::convert::TryInto;
+//use std::convert::TryInto;
 
 pub mod employee;
 pub mod software;
@@ -19,7 +19,7 @@ use crate::world::World;
 use crate::employee::Employee;
 use crate::employee::EmployeeType;
 
-use chrono::{Local};
+use chrono::Local;
 
 fn build_company(_employees: &mut HashMap<&str, Box<Employee>>) {
   
@@ -74,17 +74,17 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
 
 
   // Count developers
-  for (k, v) in _employees.iter() {
+  for (_k, v) in _employees.iter() {
 
-    if (v._type == EmployeeType::Developer) {
+    if v._type == EmployeeType::Developer {
       developers = developers + 1;
-    } else if (v._type == EmployeeType::Administrator) {
+    } else if v._type == EmployeeType::Administrator {
       administrators = administrators + 1;
-    } else if (v._type == EmployeeType::Tester) {
+    } else if v._type == EmployeeType::Tester {
       testers = testers + 1;
-    } else if (v._type == EmployeeType::Salesperson) {
+    } else if v._type == EmployeeType::Salesperson {
       salespeople = salespeople + 1;
-    } else if (v._type == EmployeeType::Marketeer) {
+    } else if v._type == EmployeeType::Marketeer {
       marketers = marketers + 1;
     }
   }
@@ -233,7 +233,7 @@ fn main() {
       let format_time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
-      if (Local::now() > world._last_tick_time) {
+      if Local::now() > world._last_tick_time {
         world.increment_game_ticks();
         world.set_current_time(Local::now());
         draw_hud(&employees, &company, &software, &world, &window);
