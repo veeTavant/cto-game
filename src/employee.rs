@@ -1,9 +1,13 @@
 trait Work {
-        fn work(&self);
+        fn work(&mut self);
 }
 
 trait Learn {
-    fn learn(&self);
+    fn learn(&mut self);
+}
+
+trait Quit {
+   fn quit(&mut self);
 }
 
 // Structure
@@ -45,25 +49,41 @@ pub struct Employee {
 }
 
 impl Work for Employee {
-    fn work(&self) {
+    fn work(&mut self) {
         println!("working!");
     }
 }
 
-/*
-struct Developer {
-    is_a_parrot: bool
-}
-*/
-
-/*
-impl Quack for RandomBird {
-    fn quack(&self) {
-        if ! self.is_a_parrot {
-            println!("quack!");
-        } else {
-            println!("squawk!");
-        }
+impl Learn for Employee {
+    fn learn(&mut self) {
+        self._efficiency = self._efficiency + 1;
     }
 }
- */
+
+impl Quit for Employee {
+    fn quit(&mut self) {
+        println!("quit!");
+    }
+
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn employee_tests() {
+
+        let mut employee = Box::new(Employee {
+            _type: EmployeeType::Developer,
+            _name: "Developer 2".to_string(),
+            _age: 23,
+            _efficiency: 35,
+            _salary: 89,
+            _talent: 77
+          });
+        
+        employee.learn();
+        assert_eq!(employee._efficiency, 36);
+    }
+}

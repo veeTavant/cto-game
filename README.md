@@ -2,10 +2,9 @@
 
 # CTO Game
 
-Can you become the most successful software company in history?
+Can you become the most successful software company in history?  Let's see your CTO chops!
 
-Let's see your CTO chops!
-
+This is my test bed project for learning rust and learning TDD.
 
 # Installation and Running
 
