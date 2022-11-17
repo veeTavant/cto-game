@@ -22,20 +22,6 @@ pub struct World {
 }
 
 impl World {
-    /* 
-    fn new (a: u16, b: u16, c: u16, d: u16, e: u32, f: DateTime<Local>) -> Self {
-        World {
-            _global_economic_factors: a,
-            _competition_in_market: b,
-            _job_market: c,
-            _speed: d,
-            _game_ticks: e,
-            _last_tick_time: f,
-            _game_start_time: Local::now()
-        }
-    }
-*/
-
     
     pub fn increment_game_ticks(&mut self) {
         self._game_ticks = self._game_ticks + 1;
@@ -46,6 +32,7 @@ impl World {
 
     pub fn set_current_time(&mut self, time_now: DateTime<Local>) {
         self._last_tick_time = time_now;
+
     }
 
     pub fn get_game_elapse_time(& self) -> chrono::Duration {
@@ -60,3 +47,26 @@ impl World {
     
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn time_tests() {
+
+        let mut world: Box<World> = Box::new(World {
+            _competition_in_market: 100,
+            _global_economic_factors: 100,
+            _job_market: 100,
+            _speed: 100,
+            _game_ticks: 0,
+            _last_tick_time: Local::now(),
+            _game_start_time: Local::now()
+        });
+
+        world.increment_game_ticks();
+        assert_eq!(world._game_ticks, 1);
+    }
+
+
+}
