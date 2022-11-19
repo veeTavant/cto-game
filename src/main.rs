@@ -1,17 +1,10 @@
 // https://github.com/ihalila/pancurses
 //
 extern crate pancurses;
-//use chrono::format::Numeric;
 use pancurses::*;
 
-//use std::char::ToUppercase;
 use std::collections::HashMap;
-//use std::convert::TryInto;
 
-pub mod employee;
-pub mod software;
-pub mod world;
-pub mod company;
 
 use crate::company::Company;
 use crate::software::Software;
@@ -20,6 +13,12 @@ use crate::employee::Employee;
 use crate::employee::EmployeeType;
 
 use chrono::Local;
+
+mod employee;
+mod software;
+mod world;
+mod company;
+
 
 fn build_company(_employees: &mut HashMap<&str, Box<Employee>>) {
   
@@ -107,9 +106,9 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
   _window.mvaddstr(6, second_column_pos  , "Code Complexity:");
 
   let second_column_results_pos = second_column_pos + 30;
-  _window.mvaddstr(1, second_column_results_pos, _company._cash_in_bank.to_string());
-  _window.mvaddstr(2, second_column_results_pos, _company._customers.to_string());
-  _window.mvaddstr(3, second_column_results_pos, _company._cost_of_service_per_month.to_string());
+  _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank.to_string());
+  _window.mvaddstr(2, second_column_results_pos, _company.customers.to_string());
+  _window.mvaddstr(3, second_column_results_pos, _company.cost_of_service_per_month.to_string());
   _window.mvaddstr(4, second_column_results_pos, _software._lines_of_code.to_string());
   _window.mvaddstr(5, second_column_results_pos, _software._age_of_code.to_string());
   _window.mvaddstr(6, second_column_results_pos, _software._complexity_of_code.to_string());
@@ -180,13 +179,14 @@ fn main() {
     _game_start_time: Local::now()
   });
 
-//  let mut world2 = World(100, 100, 100, 100, 0);
- 
-  let company: Box<Company> = Box::new(Company {
-    _cash_in_bank: 1000000,
-    _cost_of_service_per_month: 30,
-    _customers: 0
-  });
+  //  let mut world2 = World(100, 100, 100, 100, 0);
+
+  let company = Company{ cash_in_bank: 100, customers: 100, cost_of_service_per_month: 100, direction: company::CompanyDirection::B2B };
+
+ //   _cash_in_bank: 1000000,
+ //   _cost_of_service_per_month: 30,
+ //   _customers: 0
+ // });
 
   // Init windows
   //

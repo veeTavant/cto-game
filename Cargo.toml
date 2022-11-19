@@ -2,6 +2,7 @@
 name = "cto-game"
 version = "0.0.1"
 edition = "2021"
+authors = ["Richard Bown <me@richardwbown.com>"]
 
 [dependencies]
 pancurses = "0.17"
