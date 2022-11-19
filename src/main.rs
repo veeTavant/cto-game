@@ -109,9 +109,9 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
   _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank.to_string());
   _window.mvaddstr(2, second_column_results_pos, _company.customers.to_string());
   _window.mvaddstr(3, second_column_results_pos, _company.cost_of_service_per_month.to_string());
-  _window.mvaddstr(4, second_column_results_pos, _software._lines_of_code.to_string());
-  _window.mvaddstr(5, second_column_results_pos, _software._age_of_code.to_string());
-  _window.mvaddstr(6, second_column_results_pos, _software._complexity_of_code.to_string());
+  _window.mvaddstr(4, second_column_results_pos, _software.lines_of_code.to_string());
+  _window.mvaddstr(5, second_column_results_pos, _software.age_of_code.to_string());
+  _window.mvaddstr(6, second_column_results_pos, _software.complexity_of_code.to_string());
 
 
   // World
@@ -163,13 +163,13 @@ fn main() {
   let mut employees = HashMap::new();
   build_company(&mut employees);
 
-  let software: Box<Software> = Box::new(Software {
-    _lines_of_code: 0,
-    _age_of_code: 0,
-    _complexity_of_code: 0
-  });
+  let software = Software {
+    lines_of_code: 0,
+    age_of_code: 0,
+    complexity_of_code: 0
+  };
 
-  let mut world: Box<World> = Box::new(World {
+  let mut world = World {
     _competition_in_market: 100,
     _global_economic_factors: 100,
     _job_market: 100,
@@ -177,16 +177,9 @@ fn main() {
     _game_ticks: 0,
     _last_tick_time: Local::now(),
     _game_start_time: Local::now()
-  });
-
-  //  let mut world2 = World(100, 100, 100, 100, 0);
+  };
 
   let company = Company{ cash_in_bank: 100, customers: 100, cost_of_service_per_month: 100, direction: company::CompanyDirection::B2B };
-
- //   _cash_in_bank: 1000000,
- //   _cost_of_service_per_month: 30,
- //   _customers: 0
- // });
 
   // Init windows
   //

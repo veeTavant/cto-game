@@ -1,5 +1,5 @@
 trait Work {
-        fn work(&mut self);
+    fn work(&mut self);
 }
 
 trait Learn {
@@ -25,17 +25,17 @@ trait Quit {
 pub enum EmployeeType {
     Developer,
     Tester,
-    ProductOwner,
-    ProductManager,
-    Administrator,
-    CTO,
-    Marketeer,
     Salesperson,
+    Marketeer,
+    Administrator
+ /* FinaceDirector,
     CEO,
-    FinaceDirector,
+    CTO,
     CMO,
     CPO,
-    Accountant
+    Accountant,
+    ProductOwner,
+    ProductManager,*/
 }
 
 
@@ -69,6 +69,7 @@ impl Quit for Employee {
 
 #[cfg(test)]
 mod test {
+
     use super::*;
 
     #[test]

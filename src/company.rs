@@ -1,26 +1,27 @@
 
+trait New {
+    fn new(&mut self, cash: u32, customers: u32, cost: u32, direction: CompanyDirection) -> Company;
+}
+
+trait SetDirection {
+    fn set_direction(&mut self, direction: CompanyDirection) -> Company;
+}
+
+
 // https://rust-classes.com/chapter_4_3.html
 //
 
 // Company constraints
 //
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum CompanyDirection {
     B2B,
-    B2C,
+    B2C /* 
     SaaS,
-    Whatever
+    Whatever */
 }
 
-trait New {
-    fn new(cash: u32, customers: u32, cost: u32, direction: CompanyDirection) -> Company;
-}
-
-trait SetDirection {
-    fn setDirection(company: Company, direction: CompanyDirection) -> Company;
-}
-
-#[derive(Debug)]
+//#[derive(Debug)]
 pub struct Company {
     pub cash_in_bank: u32,                  // starting cash
     pub customers: u32,                     // #
@@ -28,19 +29,35 @@ pub struct Company {
     pub direction: CompanyDirection
 }
 
-impl Company {
-    //CashInBank!() -> u32 { return cash_in_bank; }
-}
-
- 
 impl New for Company {
-    fn new(cash: u32, customers: u32, cost: u32, direction: CompanyDirection) -> Company {
+    fn new(&mut self, cash: u32, customers: u32, cost: u32, direction: CompanyDirection) -> Company {
         Company { cash_in_bank: cash, customers: customers, cost_of_service_per_month: cost, direction: direction }
     }
 }
 
 impl SetDirection for Company {
-    fn setDirection(company: Company, direction: CompanyDirection) -> Company {
-        Company { cash_in_bank: company.cash_in_bank, customers: company.customers, cost_of_service_per_month: company.cost_of_service_per_month, direction: direction }
+    fn set_direction(&mut self, direction: CompanyDirection) -> Company {
+        Company { cash_in_bank: self.cash_in_bank, customers: self.customers, cost_of_service_per_month: self.cost_of_service_per_month, direction: direction }
+    }
+}
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn company_tests() {
+
+        let mut company = Company {
+            cash_in_bank: 100,
+            customers: 100,
+            cost_of_service_per_month: 100,
+            direction: CompanyDirection::B2B
+          };
+
+        let company2 = company.set_direction(CompanyDirection::B2C);
+
+        assert_eq!(company2.direction, CompanyDirection::B2C);
     }
 }
