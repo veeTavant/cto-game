@@ -38,16 +38,32 @@ impl Company {
 
     // Immutable access.
     pub fn cash_in_bank(&self) -> u32 {
-        return self._cash_in_bank;
+        self._cash_in_bank
     }
     pub fn customers(&self) -> u32 {
-        return self._customers;
+        self._customers
     }
     pub fn cost_of_service_per_month(&self) -> u32 {
-        return self._cost_of_service_per_month;
+        self._cost_of_service_per_month
     }
     pub fn direction(&self) -> CompanyDirection {
-        return self._direction;
+        self._direction
+    }
+
+    pub fn remove_cash(&mut self, cash :u32) {
+        self._cash_in_bank -= cash;
+    }
+
+    pub fn add_cash(&mut self, cash :u32) {
+        self._cash_in_bank += cash;
+    }
+
+    pub fn remove_customers(&mut self, customers: u32) {
+        self._customers -= customers;
+    }
+
+    pub fn add_customers(&mut self, customers: u32) {
+        self._customers += customers;
     }
 
     // Mutable access.
@@ -71,12 +87,36 @@ mod test {
     use super::*;
 
     #[test]
-    fn company_tests() {
+    fn company_direction_test() {
 
         let mut company = Company::new(100, 100, 100, CompanyDirection::B2B);
 
         company.set_direction(CompanyDirection::B2C);
-
         assert_eq!(company.direction(), CompanyDirection::B2C);
     }
+
+    #[test]
+    fn company_cash_test() {
+
+        let mut company = Company::new(100, 100, 100, CompanyDirection::B2B);
+
+        company.remove_cash(10);
+        assert_eq!(company.cash_in_bank(), 90);
+
+        company.add_cash(10);
+        assert_eq!(company.cash_in_bank(), 100);
+    }
+    
+    #[test]
+    fn company_customer_test() {
+
+        let mut company = Company::new(100, 100, 100, CompanyDirection::B2B);
+
+        company.remove_customers(10);
+        assert_eq!(company.customers(), 90);
+
+        company.add_customers(10);
+        assert_eq!(company.customers(), 100);
+    }
+
 }

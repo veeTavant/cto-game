@@ -221,3 +221,10 @@ fn main() {
 
   endwin();
 }
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+}

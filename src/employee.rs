@@ -51,31 +51,31 @@ pub struct Employee {
 impl Employee {
 
     pub fn new(employee_type :EmployeeType, name :String, age :u16, salary :u16, efficiency :u16, talent :u16) -> Employee {
-        return Employee { _employee_type: employee_type, _name: name, _age: age, _salary: salary, _efficiency: efficiency, _talent: talent };
+        Employee { _employee_type: employee_type, _name: name, _age: age, _salary: salary, _efficiency: efficiency, _talent: talent }
     }  
 
     pub fn employee_type(&self) -> EmployeeType {
-        return self._employee_type;
+        self._employee_type
     }
 
     pub fn name(&self) -> String {
-        return self._name.to_string();
+        self._name.to_string()
     }
 
     pub fn age(&self) -> u16 {
-        return self._age;
+        self._age
     }
 
     pub fn salary(&self) -> u16 {
-        return self._salary;
+        self._salary
     }
 
     pub fn efficiency(&self) -> u16 {
-        return self._efficiency;
+        self._efficiency
     }
 
     pub fn talent(&self) -> u16 {
-        return self._talent;
+        self._talent
     }
 
 
