@@ -21,7 +21,7 @@ trait Quit {
 //  Administrator 
 //
 //
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum EmployeeType {
     Developer,
     Tester,
@@ -40,12 +40,45 @@ pub enum EmployeeType {
 
 
 pub struct Employee {
-    pub _type: EmployeeType,
-    pub _name: String,
-    pub _age: u16,
-    pub _salary: u16,
-    pub _efficiency: u16,
-    pub _talent: u16
+     _employee_type: EmployeeType,
+     _name: String,
+     _age: u16,
+     _salary: u16,
+     _efficiency: u16,
+     _talent: u16
+}
+
+impl Employee {
+
+    pub fn new(employee_type :EmployeeType, name :String, age :u16, salary :u16, efficiency :u16, talent :u16) -> Employee {
+        return Employee { _employee_type: employee_type, _name: name, _age: age, _salary: salary, _efficiency: efficiency, _talent: talent };
+    }  
+
+    pub fn employee_type(&self) -> EmployeeType {
+        return self._employee_type;
+    }
+
+    pub fn name(&self) -> String {
+        return self._name.to_string();
+    }
+
+    pub fn age(&self) -> u16 {
+        return self._age;
+    }
+
+    pub fn salary(&self) -> u16 {
+        return self._salary;
+    }
+
+    pub fn efficiency(&self) -> u16 {
+        return self._efficiency;
+    }
+
+    pub fn talent(&self) -> u16 {
+        return self._talent;
+    }
+
+
 }
 
 impl Work for Employee {
@@ -75,16 +108,9 @@ mod test {
     #[test]
     fn employee_tests() {
 
-        let mut employee = Box::new(Employee {
-            _type: EmployeeType::Developer,
-            _name: "Developer 2".to_string(),
-            _age: 23,
-            _efficiency: 35,
-            _salary: 89,
-            _talent: 77
-          });
-        
+        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
         employee.learn();
-        assert_eq!(employee._efficiency, 36);
+
+        assert_eq!(employee._efficiency, 90);
     }
 }

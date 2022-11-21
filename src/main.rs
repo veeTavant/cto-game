@@ -20,43 +20,20 @@ mod world;
 mod company;
 
 
-fn build_company(_employees: &mut HashMap<&str, Box<Employee>>) {
+fn build_company(_employees: &mut HashMap<&str, Employee>) {
   
-  let dev1 = Box::new(Employee {
-    _type: EmployeeType::Developer,
-    _name: "Developer 1".to_string(),
-    _age: 50,
-    _efficiency: 90,
-    _salary: 200,
-    _talent: 90
-  });
-
-  let dev2 = Box::new(Employee {
-    _type: EmployeeType::Developer,
-    _name: "Developer 2".to_string(),
-    _age: 23,
-    _efficiency: 35,
-    _salary: 89,
-    _talent: 77
-  });
-
-  let dev3 = Box::new(Employee {
-    _type: EmployeeType::Developer,
-    _name: "Developer 3".to_string(),
-    _age: 30,
-    _efficiency: 70,
-    _salary: 100,
-    _talent: 85
-  });
+  let dev1 = Employee::new(EmployeeType::Developer, "Developer 1".to_string(), 50, 90, 200, 90);
+  let dev2 = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+  let dev3 = Employee::new(EmployeeType::Developer, "Developer 3".to_string(), 30, 70, 100, 85);
 
   _employees.insert("Developer 1", dev1);
   _employees.insert("Developer 2", dev2);
   _employees.insert("Developer 3", dev3);
-  _employees.insert("Admin 1", Box::new(Employee { _type: EmployeeType::Administrator, _name: "Admin 1".to_string(), _age: 37, _efficiency: 80, _salary: 80, _talent: 65}));
+  _employees.insert("Admin 1",  Employee::new( EmployeeType::Administrator,"Admin 1".to_string(), 37,  80,  80,  65));
 
 }
 
-fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
+fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
   _window.mvaddstr(1, 1, "Employees:");
   _window.mvaddstr(2, 1, "Developers:");
@@ -75,15 +52,15 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
   // Count developers
   for (_k, v) in _employees.iter() {
 
-    if v._type == EmployeeType::Developer {
+    if v.employee_type() == EmployeeType::Developer {
       developers = developers + 1;
-    } else if v._type == EmployeeType::Administrator {
+    } else if v.employee_type() == EmployeeType::Administrator {
       administrators = administrators + 1;
-    } else if v._type == EmployeeType::Tester {
+    } else if v.employee_type() == EmployeeType::Tester {
       testers = testers + 1;
-    } else if v._type == EmployeeType::Salesperson {
+    } else if v.employee_type() == EmployeeType::Salesperson {
       salespeople = salespeople + 1;
-    } else if v._type == EmployeeType::Marketeer {
+    } else if v.employee_type() == EmployeeType::Marketeer {
       marketers = marketers + 1;
     }
   }
@@ -106,9 +83,9 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
   _window.mvaddstr(6, second_column_pos  , "Code Complexity:");
 
   let second_column_results_pos = second_column_pos + 30;
-  _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank.to_string());
-  _window.mvaddstr(2, second_column_results_pos, _company.customers.to_string());
-  _window.mvaddstr(3, second_column_results_pos, _company.cost_of_service_per_month.to_string());
+  _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank().to_string());
+  _window.mvaddstr(2, second_column_results_pos, _company.customers().to_string());
+  _window.mvaddstr(3, second_column_results_pos, _company.cost_of_service_per_month().to_string());
   _window.mvaddstr(4, second_column_results_pos, _software.lines_of_code.to_string());
   _window.mvaddstr(5, second_column_results_pos, _software.age_of_code.to_string());
   _window.mvaddstr(6, second_column_results_pos, _software.complexity_of_code.to_string());
@@ -137,7 +114,7 @@ fn draw_hud(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _soft
 
 }
 
-fn draw_matrix_workface(_employees: &HashMap<&str, Box<Employee>>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
+fn draw_matrix_workface(_employees: &HashMap<&str, Employee>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
   let min_x  = _window.get_max_x() / 2 - _window.get_max_x() / 4;
   let max_x  = _window.get_max_x() / 2 + _window.get_max_x() / 4;
@@ -179,7 +156,8 @@ fn main() {
     _game_start_time: Local::now()
   };
 
-  let company = Company{ cash_in_bank: 100, customers: 100, cost_of_service_per_month: 100, direction: company::CompanyDirection::B2B };
+  let company = company::Company::new(100, 100, 100, company::CompanyDirection::B2B);
+
 
   // Init windows
   //
