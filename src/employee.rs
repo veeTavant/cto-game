@@ -1,15 +1,3 @@
-trait Work {
-    fn work(&mut self);
-}
-
-trait Learn {
-    fn learn(&mut self);
-}
-
-trait Quit {
-   fn quit(&mut self);
-}
-
 // Structure
 //
 //                            CEO
@@ -43,15 +31,15 @@ pub struct Employee {
      _employee_type: EmployeeType,
      _name: String,
      _age: u16,
-     _salary: u16,
+     _compensation: u16,
      _efficiency: u16,
      _talent: u16
 }
 
 impl Employee {
 
-    pub fn new(employee_type :EmployeeType, name :String, age :u16, salary :u16, efficiency :u16, talent :u16) -> Employee {
-        Employee { _employee_type: employee_type, _name: name, _age: age, _salary: salary, _efficiency: efficiency, _talent: talent }
+    pub fn new(employee_type :EmployeeType, name :String, age :u16, compensation :u16, efficiency :u16, talent :u16) -> Employee {
+        Employee { _employee_type: employee_type, _name: name, _age: age, _compensation: compensation, _efficiency: efficiency, _talent: talent }
     }  
 
     pub fn employee_type(&self) -> EmployeeType {
@@ -67,7 +55,7 @@ impl Employee {
     }
 
     pub fn salary(&self) -> u16 {
-        self._salary
+        self._compensation
     }
 
     pub fn efficiency(&self) -> u16 {
@@ -78,27 +66,37 @@ impl Employee {
         self._talent
     }
 
-
-}
-
-impl Work for Employee {
-    fn work(&mut self) {
-        println!("working!");
-    }
-}
-
-impl Learn for Employee {
-    fn learn(&mut self) {
-        self._efficiency = self._efficiency + 1;
-    }
-}
-
-impl Quit for Employee {
-    fn quit(&mut self) {
-        println!("quit!");
+    pub fn add_talent(&mut self, talent :u16) {
+        self._talent += talent
     }
 
+    pub fn add_efficiency(&mut self, efficiency :u16) {
+        self._efficiency += efficiency
+    }
+
+    pub fn remove_efficiency(&mut self, efficiency :u16) {
+        self._efficiency -= efficiency
+    }
+
+    pub fn add_compensation(&mut self, compensation :u16) {
+        self._compensation += compensation
+    }
+
+    pub fn remove_compensation(&mut self, compensation :u16) {
+        self._compensation -= compensation
+    }
+
+    pub fn add_age(&mut self, age :u16) {
+        self._age += age
+    }
+
+    pub fn set_employee_type(&mut self, employee_type :EmployeeType) {
+        self._employee_type = employee_type
+    }
+
 }
+
+
 
 #[cfg(test)]
 mod test {
@@ -106,11 +104,41 @@ mod test {
     use super::*;
 
     #[test]
-    fn employee_tests() {
-
+    fn employee_age_test() {
         let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
-        employee.learn();
-
-        assert_eq!(employee._efficiency, 90);
+        employee.add_age(11);
+        assert_eq!(employee._age, 34);
     }
+
+    #[test]
+    fn employee_efficiency_tests() {
+        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        
+        employee.add_efficiency(11);
+        assert_eq!(employee._efficiency, 100);
+
+        employee.remove_efficiency(11);
+        assert_eq!(employee._efficiency, 89);
+    }
+
+    #[test]
+    fn employee_compensation_test() {
+        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        employee.add_compensation(10);
+        assert_eq!(employee._compensation, 45);
+
+        employee.remove_compensation(10);
+        assert_eq!(employee._compensation, 35)
+    }
+
+    #[test]
+    fn employee_type_test() {
+        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        assert_eq!(employee._employee_type, EmployeeType::Developer);
+
+        employee.set_employee_type(EmployeeType::Administrator);
+        assert_eq!(employee._employee_type, EmployeeType::Administrator);
+    }
+
+
 }
