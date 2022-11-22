@@ -86,9 +86,9 @@ fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software:
   _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank().to_string());
   _window.mvaddstr(2, second_column_results_pos, _company.customers().to_string());
   _window.mvaddstr(3, second_column_results_pos, _company.cost_of_service_per_month().to_string());
-  _window.mvaddstr(4, second_column_results_pos, _software.lines_of_code.to_string());
-  _window.mvaddstr(5, second_column_results_pos, _software.age_of_code.to_string());
-  _window.mvaddstr(6, second_column_results_pos, _software.complexity_of_code.to_string());
+  _window.mvaddstr(4, second_column_results_pos, _software.lines_of_code().to_string());
+  _window.mvaddstr(5, second_column_results_pos, _software.age_of_code().to_string());
+  _window.mvaddstr(6, second_column_results_pos, _software.complexity_of_code().to_string());
 
 
   // World
@@ -140,11 +140,7 @@ fn main() {
   let mut employees = HashMap::new();
   build_company(&mut employees);
 
-  let software = Software {
-    lines_of_code: 0,
-    age_of_code: 0,
-    complexity_of_code: 0
-  };
+  let software = Software::new(0, 0, 0, 0);
 
   let mut world = World {
     _competition_in_market: 100,

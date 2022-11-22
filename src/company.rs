@@ -31,8 +31,7 @@ pub struct Company {
 
 impl Company {
 
-    pub fn new(cash_in_bank: u32, customers: u32, cost_of_service_per_month: u32, direction: CompanyDirection) -> Company {
-        
+    pub fn new(cash_in_bank: u32, customers: u32, cost_of_service_per_month: u32, direction: CompanyDirection) -> Company {   
         return Company { _cash_in_bank: cash_in_bank, _customers: customers, _cost_of_service_per_month: cost_of_service_per_month, _direction: direction };
     }
 
