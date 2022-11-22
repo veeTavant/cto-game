@@ -104,12 +104,12 @@ fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software:
   
 
 
-  _window.mvaddstr(_window.get_max_y() - 6, first_column_results_pos, _world._global_economic_factors.to_string());
-  _window.mvaddstr(_window.get_max_y() - 5, first_column_results_pos, _world._competition_in_market.to_string());
-  _window.mvaddstr(_window.get_max_y() - 4, first_column_results_pos, _world._job_market.to_string());
-  _window.mvaddstr(_window.get_max_y() - 3, first_column_results_pos, _world._speed.to_string());
+  _window.mvaddstr(_window.get_max_y() - 6, first_column_results_pos, _world.global_economic_factors().to_string());
+  _window.mvaddstr(_window.get_max_y() - 5, first_column_results_pos, _world.competition_in_market().to_string());
+  _window.mvaddstr(_window.get_max_y() - 4, first_column_results_pos, _world.job_market().to_string());
+  _window.mvaddstr(_window.get_max_y() - 3, first_column_results_pos, _world.speed().to_string());
 
-  _window.mvaddstr(_window.get_max_y() - 6, second_column_results_pos, _world._game_ticks.to_string());
+  _window.mvaddstr(_window.get_max_y() - 6, second_column_results_pos, _world.game_ticks().to_string());
   _window.mvaddstr(_window.get_max_y() - 7, second_column_results_pos, _world.get_game_elapse_time().to_string());
 
 }
@@ -142,15 +142,7 @@ fn main() {
 
   let software = Software::new(0, 0, 0, 0);
 
-  let mut world = World {
-    _competition_in_market: 100,
-    _global_economic_factors: 100,
-    _job_market: 100,
-    _speed: 100,
-    _game_ticks: 0,
-    _last_tick_time: Local::now(),
-    _game_start_time: Local::now()
-  };
+  let mut world = World::new(100, 100, 100, 100, 0);
 
   let company = company::Company::new(100, 100, 100, company::CompanyDirection::B2B);
 
@@ -167,7 +159,7 @@ fn main() {
 
   // set non-blocking mode
   //
-  window.timeout(world._speed as i32);
+  window.timeout(world.speed() as i32);
   window.keypad(true);
   noecho();
 
@@ -200,7 +192,7 @@ fn main() {
       let format_time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
-      if Local::now() > world._last_tick_time {
+      if Local::now() > world.last_tick_time() {
         world.increment_game_ticks();
         world.set_current_time(Local::now());
         draw_hud(&employees, &company, &software, &world, &window);

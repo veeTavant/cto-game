@@ -4,13 +4,13 @@ use chrono::{Local};
 // World for our Software and Company to live in
 //
 pub struct World {
-    pub _global_economic_factors: u16,        // 0-1000
-    pub _competition_in_market: u16,          // 0-1000
-    pub _job_market: u16,                     // 0-1000
-    pub _speed: u16,                          // 1-1000 - millisecond loop time (lower is faster)
-    pub _game_ticks: u32,                     // how far we're into the game
-    pub _last_tick_time: DateTime<Local>,     // where we are now
-    pub _game_start_time: DateTime<Local>     // when did the game start?
+    _global_economic_factors: u16,        // 0-1000
+    _competition_in_market: u16,          // 0-1000
+    _job_market: u16,                     // 0-1000
+    _speed: u16,                          // 1-1000 - millisecond loop time (lower is faster)
+    _game_ticks: u32,                     // how far we're into the game
+    _last_tick_time: DateTime<Local>,     // where we are now
+    _game_start_time: DateTime<Local>     // when did the game start?
 
     // Game mechanics
     //
@@ -22,6 +22,38 @@ pub struct World {
 }
 
 impl World {
+
+    pub fn new(global_economic_factors :u16, competition_in_market :u16, job_market :u16, speed :u16, game_ticks :u32) -> World {   
+        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _speed: speed, _game_ticks: game_ticks, _last_tick_time: Local::now(), _game_start_time: Local::now() };
+    }
+
+    pub fn global_economic_factors(& self) -> u16 {
+        self._global_economic_factors
+    }
+
+    pub fn competition_in_market(&self) -> u16 {
+        self._competition_in_market
+    }
+
+    pub fn job_market(&self) -> u16 {
+        self._job_market
+    }
+
+    pub fn speed(&self) -> u16 {
+        self._speed
+    }
+
+    pub fn game_ticks(&self) -> u32 {
+        self._game_ticks
+    }
+
+    pub fn last_tick_time(&self) -> DateTime<Local> {
+        self._last_tick_time
+    }
+
+    pub fn game_start_time(&self) -> DateTime<Local> {
+        self._game_start_time
+    }
     
     pub fn increment_game_ticks(&mut self) {
         self._game_ticks = self._game_ticks + 1;
