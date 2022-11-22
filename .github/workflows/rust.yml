@@ -1,8 +1,13 @@
-name: Rust
+name: cto-game build
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '.github/workflows/**'
+      - 'README.*'
+
   pull_request:
     branches: [ "main" ]
 
@@ -20,27 +25,3 @@ jobs:
       run: cargo build --verbose
     - name: Run tests
       run: cargo test --verbose
-
-  sonarcloud:
-    name: SonarCloud and Linter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Install Rustup
-        run: |
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -y | sh
-            source "$HOME/.cargo/env"
-            rustup component add clippy
-
-      - name: Run Clippy
-        run: |
-            cargo clippy
