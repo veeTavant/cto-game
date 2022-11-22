@@ -3,7 +3,7 @@ name: cto-game sonarcloud
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 7"
+    - cron: "0 0 * * 6"
 
 env:
   CARGO_TERM_COLOR: always
