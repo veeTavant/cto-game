@@ -13,7 +13,7 @@ impl Software {
     }
 
     pub fn lines_of_code(&self) -> u32 {
-        self.lines_of_code()
+        self._lines_of_code
     }
 
     pub fn age_of_code(&self) -> u32 {
