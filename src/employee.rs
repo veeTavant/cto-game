@@ -15,20 +15,21 @@ pub enum EmployeeType {
     Tester,
     Salesperson,
     Marketeer,
-    Administrator
- /* FinaceDirector,
+    Administrator,
+    FinanceDirector,
     CEO,
     CTO,
     CMO,
     CPO,
     Accountant,
     ProductOwner,
-    ProductManager,*/
+    ProductManager
 }
 
 
 pub struct Employee {
      _employee_type: EmployeeType,
+     _id: u16,
      _name: String,
      _age: u16,
      _compensation: u16,
@@ -38,12 +39,16 @@ pub struct Employee {
 
 impl Employee {
 
-    pub fn new(employee_type :EmployeeType, name :String, age :u16, compensation :u16, efficiency :u16, talent :u16) -> Employee {
-        Employee { _employee_type: employee_type, _name: name, _age: age, _compensation: compensation, _efficiency: efficiency, _talent: talent }
+    pub fn new(employee_type :EmployeeType, id :u16, name :String, age :u16, compensation :u16, efficiency :u16, talent :u16) -> Employee {
+        Employee { _employee_type: employee_type, _id: id, _name: name, _age: age, _compensation: compensation, _efficiency: efficiency, _talent: talent }
     }  
 
     pub fn employee_type(&self) -> EmployeeType {
         self._employee_type
+    }
+
+    pub fn id(&self) -> u16 {
+        self._id
     }
 
     pub fn name(&self) -> String {
@@ -105,14 +110,14 @@ mod test {
 
     #[test]
     fn employee_age_test() {
-        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        let mut employee = Employee::new(EmployeeType::Developer, 1, "Developer 2".to_string(), 23, 35, 89, 77);
         employee.add_age(11);
         assert_eq!(employee._age, 34);
     }
 
     #[test]
     fn employee_efficiency_tests() {
-        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        let mut employee = Employee::new(EmployeeType::Developer, 2, "Developer 2".to_string(), 23, 35, 89, 77);
         
         employee.add_efficiency(11);
         assert_eq!(employee._efficiency, 100);
@@ -123,7 +128,7 @@ mod test {
 
     #[test]
     fn employee_compensation_test() {
-        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        let mut employee = Employee::new(EmployeeType::Developer, 3, "Developer 2".to_string(), 23, 35, 89, 77);
         employee.add_compensation(10);
         assert_eq!(employee._compensation, 45);
 
@@ -133,11 +138,17 @@ mod test {
 
     #[test]
     fn employee_type_test() {
-        let mut employee = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
+        let mut employee = Employee::new(EmployeeType::Developer, 4, "Developer 2".to_string(), 23, 35, 89, 77);
         assert_eq!(employee._employee_type, EmployeeType::Developer);
 
         employee.set_employee_type(EmployeeType::Administrator);
         assert_eq!(employee._employee_type, EmployeeType::Administrator);
+    }
+
+    #[test]
+    fn employee_id_test() {
+        let mut employee = Employee::new(EmployeeType::Developer, 5, "Developer 2".to_string(), 23, 35, 89, 77);
+        assert_eq!(employee.id(), 5);
     }
 
 

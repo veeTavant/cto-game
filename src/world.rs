@@ -51,9 +51,9 @@ impl World {
         self._last_tick_time
     }
 
-    pub fn game_start_time(&self) -> DateTime<Local> {
-        self._game_start_time
-    }
+    //pub fn game_start_time(&self) -> DateTime<Local> {
+    //    self._game_start_time
+    //}
     
     pub fn increment_game_ticks(&mut self) {
         self._game_ticks = self._game_ticks + 1;

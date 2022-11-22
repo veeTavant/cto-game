@@ -1,3 +1,7 @@
+use crate::employee::Employee;
+use std::collections::HashMap;
+
+
 trait SetDirection {
     fn set_direction(&mut self, direction: CompanyDirection);
 }
@@ -26,13 +30,14 @@ pub struct Company {
     _cash_in_bank: u32,                  // starting cash
     _customers: u32,                     // #
     _cost_of_service_per_month: u32,     // credits
-    _direction: CompanyDirection
+    _direction: CompanyDirection,
+    _employees: HashMap<String, Employee>
 }
 
 impl Company {
 
     pub fn new(cash_in_bank: u32, customers: u32, cost_of_service_per_month: u32, direction: CompanyDirection) -> Company {   
-        return Company { _cash_in_bank: cash_in_bank, _customers: customers, _cost_of_service_per_month: cost_of_service_per_month, _direction: direction };
+        return Company { _cash_in_bank: cash_in_bank, _customers: customers, _cost_of_service_per_month: cost_of_service_per_month, _direction: direction, _employees: HashMap::new() };
     }
 
     // Immutable access.
@@ -63,6 +68,14 @@ impl Company {
 
     pub fn add_customers(&mut self, customers: u32) {
         self._customers += customers;
+    }
+
+    pub fn add_employee(&mut self, employee :Employee) {
+        self._employees.insert(employee.name(), employee);
+    }
+
+    pub fn get_employees(&self) -> &HashMap<String, Employee> {
+        &self._employees
     }
 
     // Mutable access.

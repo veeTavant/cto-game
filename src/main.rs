@@ -20,20 +20,7 @@ mod world;
 mod company;
 
 
-fn build_company(_employees: &mut HashMap<&str, Employee>) {
-  
-  let dev1 = Employee::new(EmployeeType::Developer, "Developer 1".to_string(), 50, 90, 200, 90);
-  let dev2 = Employee::new(EmployeeType::Developer, "Developer 2".to_string(), 23, 35, 89, 77);
-  let dev3 = Employee::new(EmployeeType::Developer, "Developer 3".to_string(), 30, 70, 100, 85);
-
-  _employees.insert("Developer 1", dev1);
-  _employees.insert("Developer 2", dev2);
-  _employees.insert("Developer 3", dev3);
-  _employees.insert("Admin 1",  Employee::new( EmployeeType::Administrator,"Admin 1".to_string(), 37,  80,  80,  65));
-
-}
-
-fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
+fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
   _window.mvaddstr(1, 1, "Employees:");
   _window.mvaddstr(2, 1, "Developers:");
@@ -50,7 +37,7 @@ fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software:
 
 
   // Count developers
-  for (_k, v) in _employees.iter() {
+  for (_k, v) in _company.get_employees().iter() {
 
     if v.employee_type() == EmployeeType::Developer {
       developers = developers + 1;
@@ -66,7 +53,8 @@ fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software:
   }
 
   let first_column_results_pos = 30;
-  let number_of_employees = _employees.keys().len().to_string();
+
+  let number_of_employees = _company.get_employees().keys().len().to_string();
   _window.mvaddstr(1, first_column_results_pos, number_of_employees);
   _window.mvaddstr(2, first_column_results_pos, developers.to_string());
   _window.mvaddstr(3, first_column_results_pos, testers.to_string());
@@ -114,7 +102,7 @@ fn draw_hud(_employees: &HashMap<&str, Employee>, _company: &Company, _software:
 
 }
 
-fn draw_matrix_workface(_employees: &HashMap<&str, Employee>, _company: &Company, _software: &Software, _world: &World, _window: &Window) {
+fn draw_matrix_workface(mut _company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
   let min_x  = _window.get_max_x() / 2 - _window.get_max_x() / 4;
   let max_x  = _window.get_max_x() / 2 + _window.get_max_x() / 4;
@@ -137,22 +125,26 @@ fn draw_matrix_workface(_employees: &HashMap<&str, Employee>, _company: &Company
 
 fn main() {
 
-  let mut employees = HashMap::new();
-  build_company(&mut employees);
-
   let software = Software::new(0, 0, 0, 0);
-
   let mut world = World::new(100, 100, 100, 100, 0);
+  let mut company = company::Company::new(100, 100, 100, company::CompanyDirection::B2B);
 
-  let company = company::Company::new(100, 100, 100, company::CompanyDirection::B2B);
+  let dev1 = Employee::new(EmployeeType::Developer, 1, "Developer 1".to_string(), 50, 90, 200, 90);
+  let dev2 = Employee::new(EmployeeType::Developer, 2,  "Developer 2".to_string(), 23, 35, 89, 77);
+  let dev3 = Employee::new(EmployeeType::Developer, 3, "Developer 3".to_string(), 30, 70, 100, 85);
+  let admin1 = Employee::new(EmployeeType::Administrator, 4, "Admin 1".to_string(), 37,  80,  80,  65);
 
+  company.add_employee(dev1);
+  company.add_employee(dev2);
+  company.add_employee(dev3);
+  company.add_employee(admin1);
 
   // Init windows
   //
   let window = initscr();
 
-  draw_hud(&employees, &company, &software, &world, &window);
-  draw_matrix_workface(&employees, &company, &software, &world, &window);
+  draw_hud(&company, &software, &world, &window);
+  draw_matrix_workface(&company, &software, &world, &window);
 
   curs_set(0);
   window.refresh();
@@ -195,7 +187,7 @@ fn main() {
       if Local::now() > world.last_tick_time() {
         world.increment_game_ticks();
         world.set_current_time(Local::now());
-        draw_hud(&employees, &company, &software, &world, &window);
+        draw_hud(&company, &software, &world, &window);
       }
 
       // CMD prompt
@@ -214,5 +206,13 @@ fn main() {
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn world_tests() {
+
+      let world = World::new(100, 100, 100, 100, 0);
+      assert_eq!(world.game_ticks(), 0);
+
+    }
 
 }
