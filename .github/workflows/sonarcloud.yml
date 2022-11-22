@@ -1,8 +1,9 @@
 name: cto-game sonarcloud
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 7"
 
 env:
   CARGO_TERM_COLOR: always
