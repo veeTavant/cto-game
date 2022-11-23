@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-          
+
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -47,3 +47,12 @@ jobs:
 
       - name: Generate detailed JSON report
         run: grcov raw-parts*.profraw --source-dir . --keep-only 'src/**/*.rs' --binary-path target/debug -t covdir --filter covered -o target/coverage/coverage.json
+
+      - name: SonarCloud upload
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.community.rust.lcov.reportPaths=target/coverage/coverage.json
