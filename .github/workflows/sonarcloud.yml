@@ -12,10 +12,18 @@ jobs:
   sonarcloud:
     name: SonarCloud and Linter
     runs-on: ubuntu-latest
+    container:
+      image:                    xd009642/tarpaulin:develop-nightly
+      options:                  --security-opt seccomp=unconfined
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Build and coverage scan
+        run: |
+          cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out Json
+          ls -alrt
 
       - name: Install Rustup and Clippy
         run: |
@@ -41,3 +49,4 @@ jobs:
         with:
           args: >
             -Dsonar.externalIssuesReportPaths=sonar-issues.json
+
