@@ -20,9 +20,10 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
+      # testing this - removed +nightly from cargo command
       - name: Build and coverage scan
         run: |
-          cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out Json
+          cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out Json
           ls -alrt
 
       - name: Install Rustup and Clippy
