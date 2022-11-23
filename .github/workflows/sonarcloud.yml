@@ -28,6 +28,8 @@ jobs:
         run: |
             cargo install cargo-sonar
             cargo clippy --message-format json > my-clippy-report.json
+            cargo sonar --issues clippy --clippy-path my-clippy-report.json
+            cat sonar-issues.json
             echo "sonar.externalIssuesReportPaths=sonar-issues.json" >> sonar-project.properties
             cat sonar-project.properties
 
