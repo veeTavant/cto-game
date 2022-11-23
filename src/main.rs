@@ -3,9 +3,6 @@
 extern crate pancurses;
 use pancurses::*;
 
-use std::collections::HashMap;
-
-
 use crate::company::Company;
 use crate::software::Software;
 use crate::world::World;

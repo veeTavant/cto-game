@@ -147,7 +147,7 @@ mod test {
 
     #[test]
     fn employee_id_test() {
-        let mut employee = Employee::new(EmployeeType::Developer, 5, "Developer 2".to_string(), 23, 35, 89, 77);
+        let employee = Employee::new(EmployeeType::Developer, 5, "Developer 2".to_string(), 23, 35, 89, 77);
         assert_eq!(employee.id(), 5);
     }
 
