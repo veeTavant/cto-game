@@ -56,4 +56,10 @@ jobs:
         with:
           args: >
             -Dsonar.community.rust.lcov.reportPaths=target/coverage/coverage.json
-            -Dsonar.coverage.jacoco.xmlReportPaths=
+  # -Dsonar.coverage.jacoco.xmlReportPaths=
+
+      - name: Codecov install and run
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov
