@@ -49,6 +49,7 @@ jobs:
         with:
           args: >
             -Dsonar.externalIssuesReportPaths=sonar-issues.json
-            -Dsonar.typescript.lcov.reportPaths=lcov.info
+            -Dcommunity.rust.clippy.reportPaths=my-clippy-report.json
+            -Dcommunity.rust.lcov.reportPaths=lcov.info
 
 
