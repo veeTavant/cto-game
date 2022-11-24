@@ -1,6 +1,6 @@
 
 
-name: Codecov
+name: Megalinter
 
 on:
   workflow_dispatch:
@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: MegaLinter
         uses: oxsecurity/megalinter@v6.15.0
