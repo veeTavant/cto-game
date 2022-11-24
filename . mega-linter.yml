@@ -1,2 +1,5 @@
+ENABLE_LINTERS:
+  - RUST
+
 DISABLE:
   - SPELL
