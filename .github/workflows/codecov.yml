@@ -1,9 +1,9 @@
-name: cto-game codecov
+name: Codecov
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 6"
+    - cron: "0 0 * * *"
 
 env:
   CARGO_TERM_COLOR: always

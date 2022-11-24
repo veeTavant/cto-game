@@ -1,9 +1,9 @@
-name: cto-game sonarcloud
+name: Sonarcloud
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 6"
+    - cron: "0 0 * * *"
 
 env:
   CARGO_TERM_COLOR: always
@@ -39,7 +39,9 @@ jobs:
             cat sonar-project.properties
 
       - name: Generate code coverage
-        run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+        run: |
+          cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+          cat lcov.info 
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
@@ -51,5 +53,8 @@ jobs:
             -Dsonar.externalIssuesReportPaths=sonar-issues.json
             -Dcommunity.rust.clippy.reportPaths=my-clippy-report.json
             -Dcommunity.rust.lcov.reportPaths=lcov.info
+            -Dsonar.sources=src/
+            -Dsonar.verbose=true
+
 
 
