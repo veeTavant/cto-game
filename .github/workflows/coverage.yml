@@ -56,3 +56,4 @@ jobs:
         with:
           args: >
             -Dsonar.community.rust.lcov.reportPaths=target/coverage/coverage.json
+            -Dsonar.coverage.jacoco.xmlReportPaths=
