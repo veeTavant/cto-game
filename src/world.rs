@@ -1,5 +1,10 @@
+mod timeframe;
+
+use crate::world::timeframe::Timeframe;
+
 use chrono::{DateTime};
 use chrono::{Local};
+
 
 // World for our Software and Company to live in
 //
@@ -14,7 +19,7 @@ pub struct World {
 
 
     _frames_per_week: u16,                // frames of game time in a week
-    _weeks_per_year: u16                  // number of weeks in a year
+    _weeks_per_year: u16,                 // number of weeks in a year
 
     // Game mechanics
     //
@@ -23,12 +28,14 @@ pub struct World {
 
     // Counters for various things
     //
+
+    _timeframe: Timeframe
 }
 
 impl World {
 
     pub fn new(global_economic_factors :u16, competition_in_market :u16, job_market :u16, speed :u16, game_ticks :u32) -> World {   
-        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _speed: speed, _game_ticks: game_ticks, _last_tick_time: Local::now(), _game_start_time: Local::now(), _frames_per_week: 2, _weeks_per_year: 52 };
+        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _speed: speed, _game_ticks: game_ticks, _last_tick_time: Local::now(), _game_start_time: Local::now(), _frames_per_week: 2, _weeks_per_year: 52, _timeframe: Timeframe::new(speed, game_ticks) };
     }
 
     pub fn global_economic_factors(& self) -> u16 {

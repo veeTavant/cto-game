@@ -1,5 +1,4 @@
-
-
+---
 name: Megalinter
 
 on:
@@ -15,3 +14,4 @@ jobs:
 
       - name: MegaLinter
         uses: oxsecurity/megalinter@v6.15.0
+
