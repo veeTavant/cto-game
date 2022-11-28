@@ -35,7 +35,7 @@ mod test {
     fn timeframe_tests() {
 
         let timeframe = Timeframe::new(100, 100);
-        assert_eq!(timeframe.frames_per_week() , 52);
+        assert_eq!(timeframe.frames_per_week() , 2);
  
     }
  
