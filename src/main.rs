@@ -182,8 +182,8 @@ fn main() {
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
       if Local::now() > world.last_tick_time() {
-        world.increment_game_ticks();
-        world.set_current_time(Local::now());
+        world.increment_game_ticks(&company, &software, Local::now());
+
         draw_hud(&company, &software, &world, &window);
       }
 

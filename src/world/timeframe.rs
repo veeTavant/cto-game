@@ -12,12 +12,16 @@ pub struct Timeframe {
     _weeks_per_year: u16,                 // number of weeks in a year
 
     //_start_date: String                   // YYYYMMDD
+    _start_year: u16,
+    _start_week: u16
 
+    // start year 
+    // start week
 }
 
 impl Timeframe {
     pub fn new(speed: u16, game_ticks: u32) -> Timeframe {
-        Timeframe { _speed: speed, _game_ticks: game_ticks, _last_tick_time: Local::now(), _game_start_time: Local::now(), _frames_per_week: 2, _weeks_per_year: 52, /* _start_date: */  }
+        Timeframe { _speed: speed, _game_ticks: game_ticks, _last_tick_time: Local::now(), _game_start_time: Local::now(), _frames_per_week: 2, _weeks_per_year: 52, _start_year: 2000, _start_week: 1  }
     }
 
     pub fn speed(&self) -> u16 {
@@ -42,6 +46,14 @@ impl Timeframe {
 
     pub fn weeks_per_year(&self) -> u16 {
         self._weeks_per_year
+    }
+
+    pub fn start_year(&self) -> u16 {
+        self._start_year
+    }
+
+    pub fn start_week(&self) -> u16 {
+        self._start_week
     }
     
     pub fn increment_game_ticks(&mut self) {

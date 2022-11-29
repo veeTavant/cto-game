@@ -3,6 +3,8 @@ use chrono::{Local};
 
 mod timeframe;
 use timeframe::Timeframe;
+use super::Company;
+use super::Software;
 
 
 // World for our Software and Company to live in
@@ -48,16 +50,17 @@ impl World {
     //    self._game_start_time
     //}
     
-    pub fn increment_game_ticks(&mut self) {
+    pub fn increment_game_ticks(&mut self, company: &Company, software: &Software, time_now: DateTime<Local>) {
+        
+        // 
         self._timeframe.increment_game_ticks();
 
         // run the update
-        self.do_game_update();
-    }
+        self.do_game_update(company, software);
 
-    pub fn set_current_time(&mut self, time_now: DateTime<Local>) {
+        // Update time
+        //
         self._timeframe.set_current_time(time_now);
-
     }
 
     pub fn get_game_elapse_time(& self) -> chrono::Duration {
@@ -65,8 +68,14 @@ impl World {
     }
 
 
-    fn do_game_update (&mut self) {
-
+    // Process a tick of progress (how do we work this out?)
+    //
+    // The world defines how our software and company do the update and what that
+    // means to the company - so the logical placing of everything appears right at
+    // the moment.
+    //
+    fn do_game_update (&mut self, company: &Company, software: &Software) {
+        
     }
 
     
@@ -74,6 +83,8 @@ impl World {
 
 #[cfg(test)]
 mod test {
+    use crate::company::CompanyDirection;
+
     use super::*;
 
     #[test]
@@ -81,7 +92,9 @@ mod test {
 
         let mut world = World::new(100, 100, 100, 100, 0);
 
-        world.increment_game_ticks();
+        let company: Company = Company::new(100, 100, 100, CompanyDirection::B2B);
+        let software: Software = Software::new(100, 100, 100, 100);
+        world.increment_game_ticks(&company, &software, Local::now());
         assert_eq!(world.game_ticks(), 1);
     }
 
