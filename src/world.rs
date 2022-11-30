@@ -3,6 +3,8 @@ use chrono::{Local};
 
 mod timeframe;
 use timeframe::Timeframe;
+use crate::software::Architecture;
+
 use super::Company;
 use super::Software;
 
@@ -75,7 +77,39 @@ impl World {
     // the moment.
     //
     fn do_game_update (&mut self, company: &Company, software: &Software) {
-        
+    
+        // Find out where our software is like, what our company mission is currently and how the world is reacting to it
+        //
+        // Basic Steps for one game cycle
+        //
+        // 1. Customer Move (usage stats, active user counts, feedback, problems)
+        // 2. Operations Move (what are customer interactions like with current system)
+        // 3. Software Move (what do you add, take, change - development move) 
+        // 4. (Company level) Management Move (Direction, MarketingStrategy, Ownership, ?)
+        // 5. HR Move (HiringStrategy accoriding to management - any hiring/firing/loss updates)
+        // 6. Sales Update (new users, lost users)
+        // 7. Out Of Band Occurrences (Audit, Certification, Renewals, Power Outages, Hack Attacks)
+        // 8. Accounting updates (payments, receipts and cashflow update)
+        // 9. 
+        //
+
+
+
+        match(software.get_architecture()) {
+            Architecture::ProofofConcept => {
+
+            },
+            Architecture::EventDriven => {
+
+            },
+            Architecture::Microservices => {
+
+            },
+            Architecture::Monolith => {
+
+            }
+        }
+
 
 //        software.complexity_of_code()
     }
@@ -94,7 +128,7 @@ mod test {
 
         let mut world = World::new(100, 100, 100, 100, 0);
 
-        let company: Company = Company::new(100, 100, 100, CompanyDirection::B2B);
+        let company: Company = Company::new(100, CompanyDirection::B2B);
         let software: Software = Software::new(100, 100, 100, 100);
         world.increment_game_ticks(&company, &software, Local::now());
         assert_eq!(world.game_ticks(), 1);

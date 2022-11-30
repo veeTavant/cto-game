@@ -7,21 +7,27 @@ pub struct Timeframe {
     _game_ticks: u32,                     // how far we're into the game
     _last_tick_time: DateTime<Local>,     // where we are now
     _game_start_time: DateTime<Local>,    // when did the game start?
-
     _frames_per_week: u16,                // frames of game time in a week
     _weeks_per_year: u16,                 // number of weeks in a year
-
-    //_start_date: String                   // YYYYMMDD
-    _start_year: u16,
-    _start_week: u16
-
-    // start year 
-    // start week
+    _start_year: u16,                     // year we started
+    _start_week: u16,                     // week we started
+    _current_year: u16,                   // current year
+    _current_week: u16,                   // current week
 }
 
 impl Timeframe {
     pub fn new(speed: u16, game_ticks: u32) -> Timeframe {
-        Timeframe { _speed: speed, _game_ticks: game_ticks, _last_tick_time: Local::now(), _game_start_time: Local::now(), _frames_per_week: 2, _weeks_per_year: 52, _start_year: 2000, _start_week: 1  }
+        Timeframe { _speed: speed,
+                    _game_ticks: game_ticks,
+                    _last_tick_time: Local::now(),
+                    _game_start_time: Local::now(),
+                    _frames_per_week: 2,
+                    _weeks_per_year: 52,
+                    _start_year: 2000,
+                    _start_week: 1,
+                    _current_year: 2000,
+                    _current_week: 1
+                  }
     }
 
     pub fn speed(&self) -> u16 {

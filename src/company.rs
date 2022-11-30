@@ -23,6 +23,31 @@ pub enum CompanyDirection {
     Whatever */
 }
 
+pub enum MarketingStrategy {
+    Organic,
+    Campaign,
+    Direct,
+    Content
+}
+
+pub enum GrowthStrategy {
+    None,
+    Focussed,
+    Aggressive
+}
+
+pub enum Ownership {
+    Private,
+    Public
+}
+
+pub enum HiringStrategy {
+    Passive,
+    Opportunistic,
+    Aggressive,
+    Frozen
+}
+
 //impl PartialEq for CompanyDirection {/
 //
 //}
@@ -30,28 +55,32 @@ pub enum CompanyDirection {
 //#[derive(Debug)]
 pub struct Company {
     _cash_in_bank: u32,                  // starting cash
-    _customers: u32,                     // #
-    _cost_of_service_per_month: u32,     // credits
     _direction: CompanyDirection,
-    _employees: HashMap<String, Employee>
+    _employees: HashMap<String, Employee>,
+    _ownership: Ownership,
+    _growth_strategy: GrowthStrategy,
+    _marketing_strategy: MarketingStrategy,
+    _hiring_strategy: HiringStrategy
 }
 
 impl Company {
 
-    pub fn new(cash_in_bank: u32, customers: u32, cost_of_service_per_month: u32, direction: CompanyDirection) -> Company {   
-        return Company { _cash_in_bank: cash_in_bank, _customers: customers, _cost_of_service_per_month: cost_of_service_per_month, _direction: direction, _employees: HashMap::new() };
+    pub fn new(cash_in_bank: u32, direction: CompanyDirection) -> Company {   
+        return Company { _cash_in_bank: cash_in_bank,
+                         _direction: direction,
+                         _employees: HashMap::new(),
+                         _ownership: Ownership::Private,
+                         _growth_strategy: GrowthStrategy::Focussed,
+                         _marketing_strategy: MarketingStrategy::Organic,
+                         _hiring_strategy: HiringStrategy::Passive
+                     };
     }
 
     // Immutable access.
     pub fn cash_in_bank(&self) -> u32 {
         self._cash_in_bank
     }
-    pub fn customers(&self) -> u32 {
-        self._customers
-    }
-    pub fn cost_of_service_per_month(&self) -> u32 {
-        self._cost_of_service_per_month
-    }
+    
     pub fn direction(&self) -> CompanyDirection {
         self._direction
     }
@@ -62,14 +91,6 @@ impl Company {
 
     pub fn add_cash(&mut self, cash :u32) {
         self._cash_in_bank += cash;
-    }
-
-    pub fn remove_customers(&mut self, customers: u32) {
-        self._customers -= customers;
-    }
-
-    pub fn add_customers(&mut self, customers: u32) {
-        self._customers += customers;
     }
 
     pub fn add_employee(&mut self, employee :Employee) {
@@ -103,7 +124,7 @@ mod test {
     #[test]
     fn company_direction_test() {
 
-        let mut company = Company::new(100, 100, 100, CompanyDirection::B2B);
+        let mut company = Company::new(100, CompanyDirection::B2B);
 
         company.set_direction(CompanyDirection::B2C);
         assert_eq!(company.direction(), CompanyDirection::B2C);
@@ -112,25 +133,13 @@ mod test {
     #[test]
     fn company_cash_test() {
 
-        let mut company = Company::new(100, 100, 100, CompanyDirection::B2B);
+        let mut company = Company::new(100, CompanyDirection::B2B);
 
         company.remove_cash(10);
         assert_eq!(company.cash_in_bank(), 90);
 
         company.add_cash(10);
         assert_eq!(company.cash_in_bank(), 100);
-    }
-    
-    #[test]
-    fn company_customer_test() {
-
-        let mut company = Company::new(100, 100, 100, CompanyDirection::B2B);
-
-        company.remove_customers(10);
-        assert_eq!(company.customers(), 90);
-
-        company.add_customers(10);
-        assert_eq!(company.customers(), 100);
     }
 
 }

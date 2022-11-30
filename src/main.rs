@@ -69,8 +69,8 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
 
   let second_column_results_pos = second_column_pos + 30;
   _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank().to_string());
-  _window.mvaddstr(2, second_column_results_pos, _company.customers().to_string());
-  _window.mvaddstr(3, second_column_results_pos, _company.cost_of_service_per_month().to_string());
+  _window.mvaddstr(2, second_column_results_pos, _software.customers().to_string());
+  _window.mvaddstr(3, second_column_results_pos, _software.cost_of_service().to_string());
   _window.mvaddstr(4, second_column_results_pos, _software.lines_of_code().to_string());
   _window.mvaddstr(5, second_column_results_pos, _software.age_of_code().to_string());
   _window.mvaddstr(6, second_column_results_pos, _software.complexity_of_code().to_string());
@@ -124,7 +124,7 @@ fn main() {
 
   let software = Software::new(0, 0, 0, 0);
   let mut world = World::new(100, 100, 100, 100, 0);
-  let mut company = company::Company::new(100, 100, 100, company::CompanyDirection::B2B);
+  let mut company = company::Company::new(100, company::CompanyDirection::B2B);
 
   let dev1 = Employee::new(EmployeeType::Developer, 1, "Developer 1".to_string(), 50, 90, 200, 90);
   let dev2 = Employee::new(EmployeeType::Developer, 2,  "Developer 2".to_string(), 23, 35, 89, 77);
