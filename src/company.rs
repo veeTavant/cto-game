@@ -1,7 +1,6 @@
-mod team;
-
 use crate::employee::Employee;
 use std::collections::HashMap;
+use super::Software;
 
 
 trait SetDirection {
@@ -100,6 +99,34 @@ impl Company {
     pub fn get_employees(&self) -> &HashMap<String, Employee> {
         &self._employees
     }
+
+    pub fn modify_users_according_to_posture(&self, software: &Software) {
+
+/* 
+        // Do nothing for code less than 12 weeks old
+        //
+        if software.age_of_code() < 12 { return } 
+        
+        
+        match self._direction {
+            CompanyDirection::B2B => {
+
+
+                if software.market_popularity()  
+
+            },
+            CompanyDirection::B2C => {
+
+            }
+        }
+
+        
+        if software.usability_factor() > 30 {
+
+        }
+        */
+    }
+
 
     // Mutable access.
 //    fn first_name_mut(&mut self) -> &mut String {

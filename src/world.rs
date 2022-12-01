@@ -1,9 +1,10 @@
 use chrono::{DateTime};
 use chrono::{Local};
 
-mod timeframe;
+pub mod timeframe;
 use timeframe::Timeframe;
-use crate::software::Architecture;
+//use crate::company::CompanyDirection;
+//use crate::software::Architecture;
 
 use super::Company;
 use super::Software;
@@ -90,12 +91,45 @@ impl World {
         // 6. Sales Update (new users, lost users)
         // 7. Out Of Band Occurrences (Audit, Certification, Renewals, Power Outages, Hack Attacks)
         // 8. Accounting updates (payments, receipts and cashflow update)
-        // 9. 
+        // 9. Ready for Release?
+        
+//        if software.releases() > 
+
+
+        // What is the factor of usefulness for software? software.usability_factor()
+        // 
+        // Features and Ease of Use
         //
 
+/*
+
+        // How many customers do we have? How many active users?
+        //
+        match company.direction()
+        {
+            CompanyDirection::B2B => {
+
+                // Is the software usable by business?
+                //
+                if software.usability_factor() > 30 {
 
 
-        match(software.get_architecture()) {
+
+                }
+            },
+            CompanyDirection::B2C => {
+
+                // Is the software usable by individuals?
+                //
+                if software.usability_factor() > 10 {
+
+                }
+            }
+        } 
+        */
+        
+/* 
+        match software.get_architecture() {
             Architecture::ProofofConcept => {
 
             },
@@ -109,7 +143,7 @@ impl World {
 
             }
         }
-
+*/
 
 //        software.complexity_of_code()
     }

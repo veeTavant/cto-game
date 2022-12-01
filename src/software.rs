@@ -1,3 +1,5 @@
+use crate::world::timeframe::YearWeek;
+
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Architecture {
@@ -6,6 +8,14 @@ pub enum Architecture {
     Microservices,
     EventDriven
 }
+
+pub enum MonetizationModel {
+    OpenSource,
+    Freemium,
+    FreeTier,
+    Proprietary
+}
+
 
 pub struct Software {
     _lines_of_code:         u32,    // total
@@ -20,7 +30,12 @@ pub struct Software {
     _architecture: Architecture,    // what is the predominant architecture
     _customer_satisfaction: u16,    // 0 - 100
     _customers: u16,                // number of
-    _active_users: u16              // number of
+    _capacity_percentage_active_users: u16,             // number of active users (not same as customers)
+    _percentage_free_users: u16,    // percentage of free users
+    _monetization_model:    MonetizationModel,
+    _releases:              u16,    // how many releases have their been
+    _last_release_yearweek: YearWeek,
+    _outages:               u16     // how many outages
 }
 
 
@@ -41,12 +56,38 @@ impl Software {
                           _architecture: Architecture::ProofofConcept,
                           _customer_satisfaction: 0,
                           _customers: 0,
-                          _active_users: 0
+                          _capacity_percentage_active_users: 0,            // 0 - 100 percentage to capacity - but can be over capacity too
+                          _percentage_free_users: 0,
+                          _monetization_model: MonetizationModel::Proprietary,
+                          _releases: 0,
+                          _last_release_yearweek: YearWeek::new(2000, 1),
+                          _outages: 0
                         };
+    }
+
+
+    // Simple value which is an average of the various usability factors
+    // 
+    pub fn usability_factor(&self) -> u16 {
+        ( self._ease_of_use + self._feature_richness ) / 2
+    }
+
+    // Factor of number of current customers, current users and the monetization model
+    //
+    pub fn market_popularity(&self) -> u16 {
+        ( self._customers + self._capacity_percentage_active_users ) / 2 
     }
 
     pub fn lines_of_code(&self) -> u32 {
         self._lines_of_code
+    }
+
+    pub fn releases(&self) -> u16 {
+        self._releases
+    }
+
+    pub fn outages(&self) -> u16 {
+        self._outages
     }
 
     pub fn age_of_code(&self) -> u16 {
@@ -89,8 +130,12 @@ impl Software {
         self._customers
     }
 
-    pub fn active_users(&self) -> u16 {
-        self._active_users
+    pub fn capacity_percentage_active_users(&self) -> u16 {
+        self._capacity_percentage_active_users
+    }
+
+    pub fn set_capacity_percentage_active_users(&mut self, users: u16) {
+        self._capacity_percentage_active_users = users
     }
 
 }

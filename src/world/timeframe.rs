@@ -2,6 +2,18 @@
 use chrono::{DateTime};
 use chrono::{Local};
 
+
+pub struct YearWeek {
+    _year: u16,
+    _week: u16
+}
+
+impl YearWeek {
+    pub fn new(year: u16, week: u16) -> YearWeek {
+        YearWeek { _year: year, _week: week }
+    }
+}
+
 pub struct Timeframe {
     _speed: u16,                          // 1-1000 - millisecond loop time (lower is faster)
     _game_ticks: u32,                     // how far we're into the game
@@ -9,10 +21,8 @@ pub struct Timeframe {
     _game_start_time: DateTime<Local>,    // when did the game start?
     _frames_per_week: u16,                // frames of game time in a week
     _weeks_per_year: u16,                 // number of weeks in a year
-    _start_year: u16,                     // year we started
-    _start_week: u16,                     // week we started
-    _current_year: u16,                   // current year
-    _current_week: u16,                   // current week
+    _start_yearweek: YearWeek,            // week we started
+    _current_yearweek: YearWeek,          // current year
 }
 
 impl Timeframe {
@@ -23,10 +33,8 @@ impl Timeframe {
                     _game_start_time: Local::now(),
                     _frames_per_week: 2,
                     _weeks_per_year: 52,
-                    _start_year: 2000,
-                    _start_week: 1,
-                    _current_year: 2000,
-                    _current_week: 1
+                    _start_yearweek: YearWeek::new(2000, 0),
+                    _current_yearweek: YearWeek::new(2000, 0)
                   }
     }
 
@@ -52,14 +60,6 @@ impl Timeframe {
 
     pub fn weeks_per_year(&self) -> u16 {
         self._weeks_per_year
-    }
-
-    pub fn start_year(&self) -> u16 {
-        self._start_year
-    }
-
-    pub fn start_week(&self) -> u16 {
-        self._start_week
     }
     
     pub fn increment_game_ticks(&mut self) {
