@@ -84,20 +84,34 @@ impl Software {
     }
 
     // Factor of number of current customers, current users and the monetization model
+    // 
     //
-    pub fn market_popularity(&self, current_yearweek: YearWeek) -> u16 {
+    pub fn market_popularity(&self, current_yearweek: &YearWeek) -> u16 {
 
         if self._releases == 0 {
             return 0
         }
 
-        let mut popularity = ( self._customers + self._capacity_percentage_active_users ) / 2;
+        let mut popularity = ( self._customers as i16 + self._capacity_percentage_active_users as i16 ) / 2;
         
         // Now when was the last release?
         //
-        
+        let difference_weeks = self._last_release_yearweek.difference_weeks(current_yearweek);
 
-        return popularity;
+        if difference_weeks < 1 {
+            return popularity as u16
+        } else if difference_weeks < 10  {
+            popularity += 15
+        } else if difference_weeks < 20 {
+            popularity += 5
+        } else if difference_weeks < 40 {
+            popularity /= 2
+        } else {
+            popularity /= 4
+        }
+
+        return popularity as u16
+
     }
 
     pub fn lines_of_code(&self) -> u32 {

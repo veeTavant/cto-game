@@ -2,7 +2,7 @@
 use chrono::{DateTime};
 use chrono::{Local};
 
-
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub struct YearWeek {
     _year: u32,
     _week: u32
@@ -90,6 +90,11 @@ impl Timeframe {
     pub fn get_game_elapse_time(&self) -> chrono::Duration {
         return self._game_start_time - self._last_tick_time
     }
+
+    pub fn get_current_yearweek(&self) -> YearWeek {
+        self._current_yearweek
+    }
+
 } 
 
 
