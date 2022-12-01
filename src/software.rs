@@ -1,5 +1,4 @@
-use crate::world::timeframe::YearWeek;
-
+use crate::world::Timeframe::YearWeek;
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Architecture {
@@ -35,7 +34,8 @@ pub struct Software {
     _monetization_model:    MonetizationModel,
     _releases:              u16,    // how many releases have their been
     _last_release_yearweek: YearWeek,
-    _outages:               u16     // how many outages
+    _outages:               u16,    // how many outages
+    _technical_debt:        u16     // 0 - 100
 }
 
 
@@ -61,7 +61,8 @@ impl Software {
                           _monetization_model: MonetizationModel::Proprietary,
                           _releases: 0,
                           _last_release_yearweek: YearWeek::new(2000, 1),
-                          _outages: 0
+                          _outages: 0,
+                          _technical_debt: 0
                         };
     }
 
@@ -69,13 +70,34 @@ impl Software {
     // Simple value which is an average of the various usability factors
     // 
     pub fn usability_factor(&self) -> u16 {
-        ( self._ease_of_use + self._feature_richness ) / 2
+        if self._releases == 0 {
+            return 0
+        }
+
+        let usability = ( self._ease_of_use + self._feature_richness ) / 2 - self._technical_debt;
+
+        if usability > 0 {
+            return usability as u16
+        } else  {
+            return 0
+        }
     }
 
     // Factor of number of current customers, current users and the monetization model
     //
-    pub fn market_popularity(&self) -> u16 {
-        ( self._customers + self._capacity_percentage_active_users ) / 2 
+    pub fn market_popularity(&self, current_yearweek: YearWeek) -> u16 {
+
+        if self._releases == 0 {
+            return 0
+        }
+
+        let mut popularity = ( self._customers + self._capacity_percentage_active_users ) / 2;
+        
+        // Now when was the last release?
+        //
+        
+
+        return popularity;
     }
 
     pub fn lines_of_code(&self) -> u32 {

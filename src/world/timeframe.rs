@@ -4,13 +4,30 @@ use chrono::{Local};
 
 
 pub struct YearWeek {
-    _year: u16,
-    _week: u16
+    _year: u32,
+    _week: u32
 }
 
 impl YearWeek {
-    pub fn new(year: u16, week: u16) -> YearWeek {
+    pub fn new(year: u32, week: u32) -> YearWeek {
         YearWeek { _year: year, _week: week }
+    }
+
+    pub fn difference_weeks(&self, year_week: &YearWeek) -> u32 {
+       
+        //println!("Year = {}, Week = {}", self._year, self._week);
+        //println!("Year = {}, Week = {}", year_week._year, year_week._week);
+
+        u32::abs_diff((self._year * 52 + self._week), (year_week._year * 52 + year_week._week)) 
+//        ((self._year - year_week._year) * 52) + (self._week - year_week._week) 
+    }
+
+    pub fn year(&self) -> u32 {
+        self._year
+    }
+
+    pub fn week(&self) -> u32 {
+        self._week
     }
 }
 
@@ -87,6 +104,22 @@ mod test {
         let timeframe = Timeframe::new(100, 100);
         assert_eq!(timeframe.frames_per_week() , 2);
  
+    }
+
+    #[test]
+    fn year_week_test() {
+        let year_week = YearWeek::new(2000, 1);
+        assert_eq!(year_week.year() , 2000);
+
+    }
+
+    #[test]
+    fn year_week_difference_test() {
+        let year_week_1 = YearWeek::new(2000, 1);
+        let year_week_2 = YearWeek::new(2010, 40);
+        println!("Difference = {}",year_week_1.difference_weeks(&year_week_2));
+        assert_eq!(year_week_1.difference_weeks(&year_week_2) , 559);
+
     }
  
 } 

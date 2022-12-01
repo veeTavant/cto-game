@@ -1,10 +1,7 @@
 use chrono::{DateTime};
 use chrono::{Local};
 
-pub mod timeframe;
-use timeframe::Timeframe;
-//use crate::company::CompanyDirection;
-//use crate::software::Architecture;
+pub mod Timeframe;
 
 use super::Company;
 use super::Software;
@@ -16,13 +13,13 @@ pub struct World {
     _global_economic_factors: u16,        // 0-1000
     _competition_in_market: u16,          // 0-1000
     _job_market: u16,                     // 0-1000
-    _timeframe: Timeframe
+    _timeframe: Timeframe::Timeframe
 }
 
 impl World {
 
     pub fn new(global_economic_factors :u16, competition_in_market :u16, job_market :u16, speed :u16, game_ticks :u32) -> World {   
-        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _timeframe: Timeframe::new(speed, game_ticks) };
+        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _timeframe: Timeframe::Timeframe::new(speed, game_ticks) };
     }
 
     pub fn global_economic_factors(& self) -> u16 {
@@ -83,7 +80,7 @@ impl World {
         //
         // Basic Steps for one game cycle
         //
-        // 1. Customer Move (usage stats, active user counts, feedback, problems)
+        // 1. Usage / Customer Move (usage changes, usage stats, active user counts, feedback, problems)
         // 2. Operations Move (what are customer interactions like with current system)
         // 3. Software Move (what do you add, take, change - development move) 
         // 4. (Company level) Management Move (Direction, MarketingStrategy, Ownership, ?)
@@ -94,6 +91,12 @@ impl World {
         // 9. Ready for Release?
         
 //        if software.releases() > 
+
+        if software.usability_factor() > 0 {
+            // What's the age of the software
+            //
+
+        }
 
 
         // What is the factor of usefulness for software? software.usability_factor()
@@ -154,7 +157,6 @@ impl World {
 #[cfg(test)]
 mod test {
     use crate::company::CompanyDirection;
-
     use super::*;
 
     #[test]
