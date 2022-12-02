@@ -1,4 +1,4 @@
-use crate::employee::Employee;
+use crate::employee::{Employee, EmployeeType};
 use std::collections::HashMap;
 use super::Software;
 
@@ -6,7 +6,6 @@ use super::Software;
 trait SetDirection {
     fn set_direction(&mut self, direction: CompanyDirection);
 }
-
 
 // https://rust-classes.com/chapter_4_3.html
 //
@@ -47,11 +46,9 @@ pub enum HiringStrategy {
     Frozen
 }
 
-//impl PartialEq for CompanyDirection {/
-//
-//}
 
 //#[derive(Debug)]
+//#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub struct Company {
     _cash_in_bank: u32,                  // starting cash
     _direction: CompanyDirection,
@@ -98,6 +95,48 @@ impl Company {
 
     pub fn get_employees(&self) -> &HashMap<String, Employee> {
         &self._employees
+    }
+
+    // What is our development capacity?
+    //
+    // This is a function of developers, reliability, 
+    pub fn get_development_capacity(&self, reliability: u16, quality: u16) -> u16 {
+
+        // Count developers and their levels
+        //
+
+        // https://doc.rust-lang.org/std/iter/trait.IntoIterator.html#tymethod.into_iter
+        let mut developer_skills = 0;
+        let mut developers = 0;
+
+
+        for (key, val) in self._employees.iter() {
+            if val.employee_type() == EmployeeType::Developer {
+                developers += 1;
+                developer_skills += val.efficiency();        
+            }
+        };
+
+        if developers > 0 {
+            developer_skills = ( developer_skills as f32 / developers as f32 ) as u16; 
+        }
+
+        // Got number of developers and combined average skills
+        //
+        if quality < 50 {
+            developer_skills /= 2;
+        }
+
+        // Adjust by reliability
+        //
+        if reliability < 30 {
+            developer_skills /= 4;
+        } else if reliability < 70 {
+            developer_skills /= 2;
+        }
+
+        return developer_skills;
+            
     }
 
     pub fn modify_users_according_to_posture(&self, software: &Software) {

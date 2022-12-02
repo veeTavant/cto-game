@@ -51,7 +51,7 @@ impl World {
     //    self._game_start_time
     //}
     
-    pub fn increment_game_ticks(&mut self, company: &Company, software: &Software, time_now: DateTime<Local>) {
+    pub fn increment_game_ticks(&mut self, company: &Company, software: &mut Software, time_now: DateTime<Local>) {
         
         // 
         self._timeframe.increment_game_ticks();
@@ -75,7 +75,7 @@ impl World {
     // means to the company - so the logical placing of everything appears right at
     // the moment.
     //
-    fn do_game_update (&mut self, company: &Company, software: &Software) {
+    fn do_game_update (&mut self, company: &Company, software: &mut Software) {
     
         // Find out where our software is like, what our company mission is currently and how the world is reacting to it
         //
@@ -90,21 +90,58 @@ impl World {
         // 7. Out Of Band Occurrences (Audit, Certification, Renewals, Power Outages, Hack Attacks)
         // 8. Accounting updates (payments, receipts and cashflow update)
         // 9. Ready for Release?
-        
-//        if software.releases() > 
 
-        if software.usability_factor() > 0 {
+        //
+        // Attempt 2 - simplify in a single turn
+        //
+        // User Growth
+        // - usability is a factor of ease of use and features limited by technical debt
+        // - popularity is a factor of number of customers, current users, reliability and release schedule
+        //
+        // Software Growth
+        // - features are grown by developers and affested by designers and product management
+        // - technical debt is affected by quality of developers and pace of change
+        // - ease of use is affected by testers, designers and product management
+        // Marketing Challenges
+        // - customers affected by marketing efforts
+        // - current users affected by reliability and features
+        // - marketing and quality directly affects releases 
+        //
 
-            let mut rng = rand::thread_rng();
-            let rand_number: f32 = rng.gen();
-            let rand_market =( rand_number * 100.0f32 ) as u16; // generates a number between 0 - 100
 
-            // What's the age of the software
-            //
-            if software.market_popularity(&self._timeframe.get_current_yearweek()) > rand_market {
+        // Consequences
+        //
+        // User Growth - only if we have released software can we have customers
+        //
+        if software.releases() > 0 {
 
+            if software.usability_factor() > 0 {
+
+                let mut rng = rand::thread_rng();
+                let rand_number: f32 = rng.gen();
+                let rand_market =( rand_number * 100.0f32 ) as u16; // generates a number between 0 - 100
+
+                // What's the age of the software
+                //
+                if software.market_popularity(&self._timeframe.get_current_yearweek()) > rand_market {
+                    println!("Gaining customers users");
+                    software.add_customers(1, false);
+                }
             }
         }
+
+
+        // Software Growth
+        //
+        let dev_capacity = company.get_development_capacity(software.reliability(), software.quality());
+        
+        if dev_capacity > 50 {
+            software.work_on_features(3, dev_capacity, 3);
+        }
+
+
+    }
+
 
 
         // What is the factor of usefulness for software? software.usability_factor()
@@ -157,10 +194,8 @@ impl World {
 */
 
 //        software.complexity_of_code()
-    }
-
-    
 }
+
 
 #[cfg(test)]
 mod test {
@@ -173,8 +208,8 @@ mod test {
         let mut world = World::new(100, 100, 100, 100, 0);
 
         let company: Company = Company::new(100, CompanyDirection::B2B);
-        let software: Software = Software::new(100, 100, 100, 100);
-        world.increment_game_ticks(&company, &software, Local::now());
+        let mut software: Software = Software::new(100, 100, 100, 100);
+        world.increment_game_ticks(&company, &mut software, Local::now());
         assert_eq!(world.game_ticks(), 1);
     }
 

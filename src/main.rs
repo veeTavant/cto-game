@@ -122,7 +122,7 @@ fn draw_matrix_workface(mut _company: &Company, _software: &Software, _world: &W
 
 fn main() {
 
-  let software = Software::new(0, 0, 0, 0);
+  let mut software = Software::new(0, 0, 0, 0);
   let mut world = World::new(100, 100, 100, 100, 0);
   let mut company = company::Company::new(100, company::CompanyDirection::B2B);
 
@@ -182,7 +182,7 @@ fn main() {
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
       if Local::now() > world.last_tick_time() {
-        world.increment_game_ticks(&company, &software, Local::now());
+        world.increment_game_ticks(&company, &mut software, Local::now());
 
         draw_hud(&company, &software, &world, &window);
       }
