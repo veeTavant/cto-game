@@ -1,6 +1,7 @@
 use chrono::{DateTime};
 use chrono::{Local};
 use rand::Rng;
+use crate::employee::{EmployeeType};
 
 pub mod timeframe;
 
@@ -131,12 +132,17 @@ impl World {
         }
 
 
+        // Recalculate quality in case we have staff changes
+        //
+        software.recalculate_quality(company.get_number_of_employees(EmployeeType::Developer), company.get_number_of_employees(EmployeeType::Tester));
+
+
         // Software Growth
         //
         let dev_capacity = company.get_development_capacity(software.reliability(), software.quality());
         
         if dev_capacity > 50 {
-            software.work_on_features(3, dev_capacity, 3);
+            software.work_on_features(company.get_number_of_employees(EmployeeType::Developer), dev_capacity, 3);
         }
 
 

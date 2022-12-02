@@ -1,6 +1,6 @@
 use crate::employee::{Employee, EmployeeType};
 use std::collections::HashMap;
-use super::Software;
+//use super::Software;
 
 
 trait SetDirection {
@@ -97,6 +97,17 @@ impl Company {
         &self._employees
     }
 
+    pub fn get_number_of_employees(&self, employee_type: EmployeeType) -> u16 {
+        let mut employees = 0;
+        for (key, val) in self._employees.iter() {
+            if val.employee_type() == employee_type {
+                employees += 1;
+            }
+        }
+
+        return employees;
+    }
+
     // What is our development capacity?
     //
     // This is a function of developers, reliability, 
@@ -139,41 +150,6 @@ impl Company {
             
     }
 
-    pub fn modify_users_according_to_posture(&self, software: &Software) {
-
-/* 
-        // Do nothing for code less than 12 weeks old
-        //
-        if software.age_of_code() < 12 { return } 
-        
-        
-        match self._direction {
-            CompanyDirection::B2B => {
-
-
-                if software.market_popularity()  
-
-            },
-            CompanyDirection::B2C => {
-
-            }
-        }
-
-        
-        if software.usability_factor() > 30 {
-
-        }
-        */
-    }
-
-
-    // Mutable access.
-//    fn first_name_mut(&mut self) -> &mut String {
-//       &mut self.first_name
-//   }
-//   fn last_name_mut(&mut self) -> &mut String {
-//       &mut self.last_name
-//   }
 }
 
 impl SetDirection for Company {

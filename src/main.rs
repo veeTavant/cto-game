@@ -66,14 +66,18 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   _window.mvaddstr(4, second_column_pos  , "Lines of Code:");
   _window.mvaddstr(5, second_column_pos  , "Age of Code:");
   _window.mvaddstr(6, second_column_pos  , "Code Complexity:");
+  _window.mvaddstr(7, second_column_pos  , "Dev Capacity:");
+  _window.mvaddstr(8, second_column_pos  , "Quality:");
 
   let second_column_results_pos = second_column_pos + 30;
-  _window.mvaddstr(1, second_column_results_pos, _company.cash_in_bank().to_string());
-  _window.mvaddstr(2, second_column_results_pos, _software.customers().to_string());
-  _window.mvaddstr(3, second_column_results_pos, _software.cost_of_service().to_string());
-  _window.mvaddstr(4, second_column_results_pos, _software.lines_of_code().to_string());
-  _window.mvaddstr(5, second_column_results_pos, _software.age_of_code().to_string());
-  _window.mvaddstr(6, second_column_results_pos, _software.complexity_of_code().to_string());
+  _window.mvaddstr(1, second_column_results_pos, format!("{:>7}", _company.cash_in_bank().to_string()));
+  _window.mvaddstr(2, second_column_results_pos, format!("{:>7}", _software.customers().to_string()));
+  _window.mvaddstr(3, second_column_results_pos, format!("{:>7}", _software.cost_of_service().to_string()));
+  _window.mvaddstr(4, second_column_results_pos, format!("{:>7}", _software.lines_of_code().to_string()));
+  _window.mvaddstr(5, second_column_results_pos, format!("{:>7}", _software.age_of_code().to_string()));
+  _window.mvaddstr(6, second_column_results_pos, format!("{:>7}", _software.complexity_of_code().to_string()));
+  _window.mvaddstr(7, second_column_results_pos, format!("{:>7}", _company.get_development_capacity(_software.reliability(), _software.quality()).to_string()));
+  _window.mvaddstr(8, second_column_results_pos, format!("{:>7}", _software.quality().to_string()));
 
 
   // World
@@ -101,12 +105,14 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
 
 fn draw_matrix_workface(mut _company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
-  let min_x  = _window.get_max_x() / 2 - _window.get_max_x() / 4;
-  let max_x  = _window.get_max_x() / 2 + _window.get_max_x() / 4;
-  let min_y = 8;
-  let max_y = min_y + 20;
+  let scale = 6;
 
-  let horiz_string = std::iter::repeat("-").take((1 + _window.get_max_x() / 2) as usize).collect::<String>();
+  let min_x  = _window.get_max_x() / 2 - _window.get_max_x() / scale;
+  let max_x  = _window.get_max_x() / 2 + _window.get_max_x() / scale;
+  let min_y = _window.get_max_y() / 2 - _window.get_max_y() / scale;
+  let max_y = _window.get_max_y() / 2 + _window.get_max_y() / scale;
+
+  let horiz_string = std::iter::repeat("-").take((1 + _window.get_max_x() / ( scale as f32 / 2.0f32 ) as i32 ) as usize).collect::<String>();
   let horiz_string_2 = horiz_string.clone();
   _window.mvaddstr(min_y, min_x, horiz_string );
   _window.mvaddstr(max_y, min_x, horiz_string_2 );

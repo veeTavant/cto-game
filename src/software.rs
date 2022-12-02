@@ -36,7 +36,8 @@ pub struct Software {
     _releases:              u16,    // how many releases have their been
     _last_release_yearweek: YearWeek,
     _reliability:           u16,    // 0 - 100
-    _technical_debt:        u16     // 0 - 100
+    _technical_debt:        u16,    // 0 - 100
+    _quality:               u16
 }
 
 
@@ -63,20 +64,51 @@ impl Software {
                           _monetization_model: MonetizationModel::Proprietary,
                           _releases: 0,
                           _last_release_yearweek: YearWeek::new(2000, 1),
-                          _reliability: 100,
-                          _technical_debt: 0
+                          _reliability: 100,                               // 0 - 100 - as reported by users - not testers
+                          _technical_debt: 0,                              // 0 - 100 - dependent upon development and new feature pace
+                          _quality: 100                                    // 0 - 100 - as measured by testers
                         };
     }
 
 
-    // Measure of quality from complexity_of_code, feature_richness, ease_of_use, components, services, dependencies, architecture
     pub fn quality(&self) -> u16 {
-        if self._complexity_of_code < 10 || self._services < 2 || self._components < 5 {
-            return 100;
-        }
+        self._quality
+    }
 
-        // etc
-        return 0;
+    // Measure of quality from complexity_of_code, feature_richness, ease_of_use, components, services, dependencies, architecture
+    //
+    pub fn recalculate_quality(&mut self, number_of_devs: u16, number_of_testers: u16) {
+        if self._complexity_of_code < 10 && self._services < 2 && self._components < 5 {
+            self._quality = 100;
+        } else {
+
+            let manageable_codebase_limit = 80000;
+
+            if self._lines_of_code > manageable_codebase_limit {
+                let recalculation_factor = 0.0f32;
+                if (number_of_devs > number_of_testers) {
+                    //ln(number_of_devs - number_of_testers)
+                    let modifier = ( ( (number_of_devs - number_of_testers) as f32 ) / 3.0f32 ) as u16;
+
+                    //println!("Modifier reduction = {}",modifier);
+
+                    if (modifier < self._quality) {
+                        self._quality -= modifier;
+                    } else {
+                        self._quality = 0;
+                    } 
+
+                } else { // more testers - improve quality
+                    let modifier = ( ( (number_of_testers - number_of_devs) as f32 ) / 3.0f32 ) as u16;
+
+                    if (self._quality + modifier < 100) {
+                        self._quality += modifier;
+                    } else {
+                        self._quality = 100;
+                    }
+                }
+            }
+        }
     }
 
     // Simple value which is an average of the various usability factors
@@ -189,14 +221,14 @@ impl Software {
     // - Bug Fix
     //
 
-    // Work of features
+    // Work on features
     //
     // Finger very much in the air
     pub fn work_on_features(&mut self, number_of_devs: u16, dev_focus: u16, days: u16) {
         let loc_per_day = 250;
         self._lines_of_code += ( number_of_devs as f32 * (dev_focus as f32 / 100.0f32 ) ) as u32 * loc_per_day * days as u32;
 
-        self._complexity_of_code = 50;
+        self.recalculate_code_complexity(number_of_devs, dev_focus);
     }
 
     pub fn refactor(&mut self) {
@@ -206,6 +238,25 @@ impl Software {
     pub fn bug_fix(&mut self) {
 
     }
+
+    // Try and keep dev_focus 0 - 100
+    //
+    fn recalculate_code_complexity(&mut self, number_of_devs: u16, dev_focus: u16) {
+
+        // Size of codebase per developer
+        //
+        let lines_per_dev = ( self._lines_of_code as f32 / number_of_devs as f32 ) as u32;
+
+        // Lower dev focus means more complexity but even 100% dev focus can't fix a huge codebase
+        // with not enough people.  What's the ratio?
+        //
+        let arbitrary_code_limit = 150000;
+
+        self._complexity_of_code = ( 30.00f32 * lines_per_dev as f32 / arbitrary_code_limit as f32 ) as u16;
+
+        // We limit to a third size
+        //
+     }
 
     pub fn add_lines(&mut self, lines :u32) {
         self._lines_of_code += lines
