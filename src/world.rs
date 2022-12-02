@@ -2,11 +2,11 @@ use chrono::{DateTime};
 use chrono::{Local};
 use rand::Rng;
 
-pub mod Timeframe;
+pub mod timeframe;
 
 use super::Company;
 use super::Software;
-
+use timeframe::Timeframe;
 
 // World for our Software and Company to live in
 //
@@ -14,13 +14,13 @@ pub struct World {
     _global_economic_factors: u16,        // 0-1000
     _competition_in_market: u16,          // 0-1000
     _job_market: u16,                     // 0-1000
-    _timeframe: Timeframe::Timeframe
+    _timeframe: Timeframe
 }
 
 impl World {
 
     pub fn new(global_economic_factors :u16, competition_in_market :u16, job_market :u16, speed :u16, game_ticks :u32) -> World {   
-        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _timeframe: Timeframe::Timeframe::new(speed, game_ticks) };
+        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _timeframe: Timeframe::new(speed, game_ticks) };
     }
 
     pub fn global_economic_factors(& self) -> u16 {

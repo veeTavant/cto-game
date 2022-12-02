@@ -1,6 +1,5 @@
-use crate::world::Timeframe::YearWeek;
 use rand::Rng;
-
+use crate::world::timeframe::YearWeek;
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Architecture {
     ProofofConcept,
