@@ -1,5 +1,6 @@
-[![cto-game build](https://github.com/bownie/cto-game/actions/workflows/rust.yml/badge.svg)](https://github.com/bownie/cto-game/actions/workflows/rust.yml)
-[![cto-game sonarcloud](https://github.com/bownie/cto-game/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/bownie/cto-game/actions/workflows/sonarcloud.yml)
+[![build](https://github.com/bownie/cto-game/actions/workflows/rust.yml/badge.svg)](https://github.com/bownie/cto-game/actions/workflows/rust.yml)
+[![sonar](https://github.com/bownie/cto-game/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/bownie/cto-game/actions/workflows/sonarcloud.yml)
+[![codecov](https://codecov.io/gh/bownie/cto-game/branch/main/graph/badge.svg?token=P17XAI1CTZ)](https://codecov.io/gh/bownie/cto-game)
 
 # CTO Game
 
