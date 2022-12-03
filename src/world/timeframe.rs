@@ -14,21 +14,22 @@ impl YearWeek {
     }
 
     pub fn difference_weeks(&self, year_week: &YearWeek) -> u32 {
-       
-        //println!("Year = {}, Week = {}", self._year, self._week);
-        //println!("Year = {}, Week = {}", year_week._year, year_week._week);
-
-        u32::abs_diff((self._year * 52 + self._week), (year_week._year * 52 + year_week._week)) 
-//        ((self._year - year_week._year) * 52) + (self._week - year_week._week) 
+        u32::abs_diff(self._year * 52 + self._week, year_week._year * 52 + year_week._week) 
     }
 
-    pub fn year(&self) -> u32 {
-        self._year
+    pub fn increment_week(&mut self) {
+        if self._week < 52 {
+            self._week += 1;
+        } else  {
+            self._week = 1;
+            self._year += 1;
+        }
     }
 
-    pub fn week(&self) -> u32 {
-        self._week
+    pub fn to_string(&self) -> String {
+        format!("{:04}-{:02}", self._year, self._week)
     }
+    
 }
 
 pub struct Timeframe {
@@ -36,7 +37,7 @@ pub struct Timeframe {
     _game_ticks: u32,                     // how far we're into the game
     _last_tick_time: DateTime<Local>,     // where we are now
     _game_start_time: DateTime<Local>,    // when did the game start?
-    _frames_per_week: u16,                // frames of game time in a week
+    _ticks_per_week: u16,                 // ticks of game time in a week
     _weeks_per_year: u16,                 // number of weeks in a year
     _start_yearweek: YearWeek,            // week we started
     _current_yearweek: YearWeek,          // current year
@@ -48,7 +49,7 @@ impl Timeframe {
                     _game_ticks: game_ticks,
                     _last_tick_time: Local::now(),
                     _game_start_time: Local::now(),
-                    _frames_per_week: 2,
+                    _ticks_per_week: 2,
                     _weeks_per_year: 52,
                     _start_yearweek: YearWeek::new(2000, 0),
                     _current_yearweek: YearWeek::new(2000, 0)
@@ -66,21 +67,17 @@ impl Timeframe {
     pub fn last_tick_time(&self) -> DateTime<Local> {
         self._last_tick_time
     }
-
-    pub fn game_start_time(&self) -> DateTime<Local> {
-        self._game_start_time
-    }
-
-    pub fn frames_per_week(&self) -> u16 {
-        self._frames_per_week
-    }
-
-    pub fn weeks_per_year(&self) -> u16 {
-        self._weeks_per_year
+    
+    pub fn ticks_per_week(&self) -> u16 {
+        self._ticks_per_week
     }
     
     pub fn increment_game_ticks(&mut self) {
-        self._game_ticks += 1
+        self._game_ticks += 1;
+
+        if self._game_ticks % self._ticks_per_week as u32 == 0 {
+            self._current_yearweek.increment_week()
+        }
     }
 
     pub fn set_current_time(&mut self, time_now: DateTime<Local>) {
@@ -107,15 +104,14 @@ mod test {
     fn timeframe_tests() {
 
         let timeframe = Timeframe::new(100, 100);
-        assert_eq!(timeframe.frames_per_week() , 2);
+        assert_eq!(timeframe.ticks_per_week() , 2);
  
     }
 
     #[test]
     fn year_week_test() {
         let year_week = YearWeek::new(2000, 1);
-        assert_eq!(year_week.year() , 2000);
-
+        assert_eq!(year_week.to_string(), "2000-01");
     }
 
     #[test]

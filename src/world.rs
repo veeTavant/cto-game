@@ -40,12 +40,20 @@ impl World {
         self._timeframe.speed()
     }
 
+    pub fn game_year_month(&self) -> String {
+        self._timeframe.get_current_yearweek().to_string()
+    }
+
     pub fn game_ticks(&self) -> u32 {
         self._timeframe.game_ticks()
     }
 
     pub fn last_tick_time(&self) -> DateTime<Local> {
         self._timeframe.last_tick_time()
+    }
+
+    pub fn ticks_per_week(&self) -> u16 {
+        self._timeframe.ticks_per_week()
     }
 
     //pub fn game_start_time(&self) -> DateTime<Local> {
