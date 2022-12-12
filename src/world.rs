@@ -9,19 +9,26 @@ use super::Company;
 use super::Software;
 use timeframe::Timeframe;
 
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+pub enum WorldState {
+    Nominal,
+    Bust
+}
+
 // World for our Software and Company to live in
 //
 pub struct World {
     _global_economic_factors: u16,        // 0-1000
     _competition_in_market: u16,          // 0-1000
     _job_market: u16,                     // 0-1000
-    _timeframe: Timeframe
+    _timeframe: Timeframe,                // See class
+    _world_state: WorldState              // How are we coping?
 }
 
 impl World {
 
     pub fn new(global_economic_factors :u16, competition_in_market :u16, job_market :u16, speed :u16, game_ticks :u32) -> World {   
-        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _timeframe: Timeframe::new(speed, game_ticks) };
+        return World { _global_economic_factors: global_economic_factors, _competition_in_market: competition_in_market, _job_market: job_market, _timeframe: Timeframe::new(speed, game_ticks), _world_state: WorldState::Nominal };
     }
 
     pub fn global_economic_factors(& self) -> u16 {
@@ -62,10 +69,19 @@ impl World {
     
     pub fn increment_game_ticks(&mut self, company: &mut Company, software: &mut Software, time_now: DateTime<Local>) {
         
+
+        // Only increment if we can
+        //
+        if self._world_state != WorldState::Nominal {
+            return;
+        }
+
         // Check for month roll
         // 
         if self._timeframe.increment_game_ticks() {
-            company.queue_payroll()
+            if company.queue_payroll() == false {
+                self._world_state = WorldState::Bust
+            }
         }
 
         // run the update
@@ -226,7 +242,6 @@ mod test {
 
         let mut company: Company = Company::new(100, CompanyDirection::B2B);
         let mut software: Software = Software::new(100, 100, 100, 100);
-        world.increment_game_ticks(&mut company, &mut software, Local::now());
         assert_eq!(world.game_ticks(), 1);
     }
 

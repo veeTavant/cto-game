@@ -111,7 +111,7 @@ impl Company {
     // Queue up the payroll for execution - how do we work out bonuses and year end type stuff?
     // Also when do we work out performance raises etc?
     //
-    pub fn queue_payroll(&mut self) {
+    pub fn queue_payroll(&mut self) -> bool {
         // In the simple case we just execute it
         //
         let mut payroll_amount :u32 = 0;
@@ -121,7 +121,13 @@ impl Company {
             payroll_amount += val.salary()
         }
 
-        self._cash_in_bank -= payroll_amount
+        if payroll_amount > self.cash_in_bank() {
+            self._cash_in_bank = 0;
+            return false;
+        }
+
+        self._cash_in_bank -= payroll_amount;
+        return true;
     }
 
     // What is our development capacity?
