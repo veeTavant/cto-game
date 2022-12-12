@@ -32,14 +32,14 @@ pub struct Employee {
      _id: u16,
      _name: String,
      _age: u16,
-     _compensation: u16,
+     _compensation: u32,
      _efficiency: u16,
      _talent: u16
 }
 
 impl Employee {
 
-    pub fn new(employee_type :EmployeeType, id :u16, name :String, age :u16, compensation :u16, efficiency :u16, talent :u16) -> Employee {
+    pub fn new(employee_type :EmployeeType, id :u16, name :String, age :u16, compensation :u32, efficiency :u16, talent :u16) -> Employee {
         Employee { _employee_type: employee_type, _id: id, _name: name, _age: age, _compensation: compensation, _efficiency: efficiency, _talent: talent }
     }  
 
@@ -59,8 +59,8 @@ impl Employee {
         self._age
     }
 
-    pub fn salary(&self) -> u16 {
-        self._compensation
+    pub fn salary(&self) -> u32 {
+        (self._compensation as f32 / 12f32) as u32
     }
 
     pub fn efficiency(&self) -> u16 {
@@ -83,11 +83,11 @@ impl Employee {
         self._efficiency -= efficiency
     }
 
-    pub fn add_compensation(&mut self, compensation :u16) {
+    pub fn add_compensation(&mut self, compensation :u32) {
         self._compensation += compensation
     }
 
-    pub fn remove_compensation(&mut self, compensation :u16) {
+    pub fn remove_compensation(&mut self, compensation :u32) {
         self._compensation -= compensation
     }
 

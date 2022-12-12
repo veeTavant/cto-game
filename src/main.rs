@@ -24,9 +24,7 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   _window.mvaddstr(3, 1, "Testers:");
   _window.mvaddstr(4, 1, "Administrators:");
   _window.mvaddstr(5, 1, "Marketers:");
-  _window.mvaddstr(6, 1, "Salespeople:");
-
-  _window.mvaddstr(8, 1, "Year-Month:");
+  _window.mvaddstr(6, 1, "Salespeople:");  
 
   let mut developers = 0;
   let mut testers = 0;
@@ -60,7 +58,6 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   _window.mvaddstr(4, first_column_results_pos, administrators.to_string());
   _window.mvaddstr(5, first_column_results_pos, marketers.to_string());
   _window.mvaddstr(6, first_column_results_pos, salespeople.to_string());
-  _window.mvaddstr(8, first_column_results_pos, format!("{:>7}", _world.game_year_month()));
 
 
 
@@ -88,24 +85,30 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   // World
   //
 
+  _window.mvaddstr(_window.get_max_y() - 9, 1, "Architecture:");
+  _window.mvaddstr(_window.get_max_y() - 8, 1, "Monetization Model:");
+
+
   _window.mvaddstr(_window.get_max_y() - 6, 1, "Global Economony:");
   _window.mvaddstr(_window.get_max_y() - 5, 1, "Competition:");
   _window.mvaddstr(_window.get_max_y() - 4, 1, "Job Market:");
   _window.mvaddstr(_window.get_max_y() - 3, 1, "Speed Factor:");
 
+  _window.mvaddstr(_window.get_max_y() - 4, second_column_pos, "Year - Week:");
   _window.mvaddstr(_window.get_max_y() - 5, second_column_pos, "Ticks per Week:");
   _window.mvaddstr(_window.get_max_y() - 6, second_column_pos, "Game Ticks:");
   _window.mvaddstr(_window.get_max_y() - 7, second_column_pos, "Game Time:");
-  
 
+  //_window.mvaddstr(_window.get_max_y() - 9, first_column_results_pos, _software.get_architecture());
 
   _window.mvaddstr(_window.get_max_y() - 6, first_column_results_pos, _world.global_economic_factors().to_string());
   _window.mvaddstr(_window.get_max_y() - 5, first_column_results_pos, _world.competition_in_market().to_string());
   _window.mvaddstr(_window.get_max_y() - 4, first_column_results_pos, _world.job_market().to_string());
   _window.mvaddstr(_window.get_max_y() - 3, first_column_results_pos, _world.speed().to_string());
 
-  _window.mvaddstr(_window.get_max_y() - 5, second_column_results_pos, _world.ticks_per_week().to_string());
 
+  _window.mvaddstr(_window.get_max_y() - 4, second_column_results_pos, format!("{:>7}", _world.game_year_month()));
+  _window.mvaddstr(_window.get_max_y() - 5, second_column_results_pos, _world.ticks_per_week().to_string());
   _window.mvaddstr(_window.get_max_y() - 6, second_column_results_pos, _world.game_ticks().to_string());
   _window.mvaddstr(_window.get_max_y() - 7, second_column_results_pos, _world.get_game_elapse_time().to_string());
 
@@ -196,7 +199,7 @@ fn main() {
       window.mvaddstr(0, window.get_max_x() - 20, format_time);
 
       if Local::now() > world.last_tick_time() {
-        world.increment_game_ticks(&company, &mut software, Local::now());
+        world.increment_game_ticks(&mut company, &mut software, Local::now());
 
         draw_hud(&company, &software, &world, &window);
       }

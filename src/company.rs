@@ -108,6 +108,22 @@ impl Company {
         return employees;
     }
 
+    // Queue up the payroll for execution - how do we work out bonuses and year end type stuff?
+    // Also when do we work out performance raises etc?
+    //
+    pub fn queue_payroll(&mut self) {
+        // In the simple case we just execute it
+        //
+        let mut payroll_amount :u32 = 0;
+
+        // First add it up
+        for (key, val) in self._employees.iter() {
+            payroll_amount += val.salary()
+        }
+
+        self._cash_in_bank -= payroll_amount
+    }
+
     // What is our development capacity?
     //
     // This is a function of developers, reliability, 

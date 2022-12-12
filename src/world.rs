@@ -60,10 +60,13 @@ impl World {
     //    self._game_start_time
     //}
     
-    pub fn increment_game_ticks(&mut self, company: &Company, software: &mut Software, time_now: DateTime<Local>) {
+    pub fn increment_game_ticks(&mut self, company: &mut Company, software: &mut Software, time_now: DateTime<Local>) {
         
+        // Check for month roll
         // 
-        self._timeframe.increment_game_ticks();
+        if self._timeframe.increment_game_ticks() {
+            company.queue_payroll()
+        }
 
         // run the update
         self.do_game_update(company, software);
@@ -221,9 +224,9 @@ mod test {
 
         let mut world = World::new(100, 100, 100, 100, 0);
 
-        let company: Company = Company::new(100, CompanyDirection::B2B);
+        let mut company: Company = Company::new(100, CompanyDirection::B2B);
         let mut software: Software = Software::new(100, 100, 100, 100);
-        world.increment_game_ticks(&company, &mut software, Local::now());
+        world.increment_game_ticks(&mut company, &mut software, Local::now());
         assert_eq!(world.game_ticks(), 1);
     }
 

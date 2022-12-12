@@ -2,16 +2,16 @@ use rand::Rng;
 use crate::world::timeframe::YearWeek;
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum Architecture {
-    ProofofConcept,
+    ProofofConcept /* ,
     Monolith,
     Microservices,
-    EventDriven
+    EventDriven */
 }
 
 pub enum MonetizationModel {
-    OpenSource,
+ /*   OpenSource,
     Freemium,
-    FreeTier,
+    FreeTier, */
     Proprietary
 }
 
@@ -85,12 +85,10 @@ impl Software {
             let manageable_codebase_limit = 80000;
 
             if self._lines_of_code > manageable_codebase_limit {
-                let recalculation_factor = 0.0f32;
+                //let recalculation_factor = 0.0f32;
+                
                 if (number_of_devs > number_of_testers) {
-                    //ln(number_of_devs - number_of_testers)
                     let modifier = ( ( (number_of_devs - number_of_testers) as f32 ) / 3.0f32 ) as u16;
-
-                    //println!("Modifier reduction = {}",modifier);
 
                     if (modifier < self._quality) {
                         self._quality -= modifier;
@@ -230,7 +228,7 @@ impl Software {
 
         self.recalculate_code_complexity(number_of_devs, dev_focus);
     }
-
+/* 
     pub fn refactor(&mut self) {
 
     }
@@ -238,10 +236,10 @@ impl Software {
     pub fn bug_fix(&mut self) {
 
     }
-
+*/
     // Try and keep dev_focus 0 - 100
     //
-    fn recalculate_code_complexity(&mut self, number_of_devs: u16, dev_focus: u16) {
+    fn recalculate_code_complexity(&mut self, number_of_devs: u16, _dev_focus: u16) {
 
         // Size of codebase per developer
         //
@@ -258,41 +256,11 @@ impl Software {
         //
      }
 
-    pub fn add_lines(&mut self, lines :u32) {
-        self._lines_of_code += lines
-    }
-
-    pub fn remove_lines(&mut self, lines: u32) {
-        self._lines_of_code -= lines
-    }
-
-    pub fn add_age(&mut self, age :u16) {
-        self._age_of_code += age
-    }
-
-    pub fn add_complexity(&mut self, complexity :u16) {
-        self._complexity_of_code += complexity
-    }
-
-    pub fn remove_complexity(&mut self, complexity :u16) {
-        self._complexity_of_code -= complexity
-    }
-
-    pub fn get_architecture(&self) -> Architecture {
-        self._architecture
-    }
 
     pub fn customers(&self) -> u16 {
         self._customers
     }
 
-    pub fn capacity_percentage_active_users(&self) -> u16 {
-        self._capacity_percentage_active_users
-    }
-
-    pub fn set_capacity_percentage_active_users(&mut self, users: u16) {
-        self._capacity_percentage_active_users = users
-    }
 
 }
 
@@ -301,39 +269,6 @@ impl Software {
 mod test {
 
     use super::*;
-
-    #[test]
-    fn software_lines_tests() {
-
-        let mut software = Software::new(0, 0, 0, 0);
-
-        software.add_lines(100);
-        assert_eq!(software.lines_of_code(), 100);
-
-        software.remove_lines(50);
-        assert_eq!(software.lines_of_code(), 50);
-    }
-
-    #[test]
-    fn software_age_tests() {
-
-        let mut software = Software::new(0, 0, 0, 0);
-
-        software.add_age(100);
-        assert_eq!(software.age_of_code(), 100);
-    }
-
-    #[test]
-    fn software_complexity_tests() {
-
-        let mut software = Software::new(0, 0, 0, 0);
-
-        software.add_complexity(100);
-        assert_eq!(software.complexity_of_code(), 100);
-
-        software.remove_complexity(50);
-        assert_eq!(software.complexity_of_code(), 50);
-    }
 
     #[test]
     fn software_customers_tests() {

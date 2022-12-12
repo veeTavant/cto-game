@@ -1,34 +1,49 @@
 
-use chrono::{DateTime};
-use chrono::{Local};
+use chrono::{DateTime, Local, NaiveDate, Weekday, Datelike};
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub struct YearWeek {
-    _year: u32,
+    _year: i32,
     _week: u32
 }
 
+
 impl YearWeek {
-    pub fn new(year: u32, week: u32) -> YearWeek {
+    pub fn new(year: i32, week: u32) -> YearWeek {
+        assert!(week >=1 && week <= 52);
         YearWeek { _year: year, _week: week }
     }
 
     pub fn difference_weeks(&self, year_week: &YearWeek) -> u32 {
-        u32::abs_diff(self._year * 52 + self._week, year_week._year * 52 + year_week._week) 
+        i32::abs_diff(self._year * 52 + self._week as i32, year_week._year * 52 + year_week._week as i32) 
     }
 
-    pub fn increment_week(&mut self) {
+    // Returns true if the month rotates to cause a payroll run
+    //
+    pub fn increment_week(&mut self) -> bool {
+
+        //println!("creating before_date = {}/{}",self._year, self._week);
+
+        let before_date = NaiveDate::from_isoywd(self._year, self._week, Weekday::Mon);
+        //println!("before_date = {}",before_date);
+
         if self._week < 52 {
             self._week += 1;
         } else  {
             self._week = 1;
             self._year += 1;
         }
+
+        let after_date = NaiveDate::from_isoywd(self._year, self._week, Weekday::Mon);
+        //println!("after_date = {}",after_date);
+
+        return before_date.month() != after_date.month()
     }
 
     pub fn to_string(&self) -> String {
         format!("{:04}-{:02}", self._year, self._week)
     }
+
     
 }
 
@@ -51,8 +66,8 @@ impl Timeframe {
                     _game_start_time: Local::now(),
                     _ticks_per_week: 2,
                     _weeks_per_year: 52,
-                    _start_yearweek: YearWeek::new(2000, 0),
-                    _current_yearweek: YearWeek::new(2000, 0)
+                    _start_yearweek: YearWeek::new(2000, 1),
+                    _current_yearweek: YearWeek::new(2000, 1)
                   }
     }
 
@@ -72,12 +87,14 @@ impl Timeframe {
         self._ticks_per_week
     }
     
-    pub fn increment_game_ticks(&mut self) {
+    pub fn increment_game_ticks(&mut self) -> bool {
         self._game_ticks += 1;
 
         if self._game_ticks % self._ticks_per_week as u32 == 0 {
-            self._current_yearweek.increment_week()
+            return self._current_yearweek.increment_week()
         }
+
+        return false
     }
 
     pub fn set_current_time(&mut self, time_now: DateTime<Local>) {
@@ -91,6 +108,11 @@ impl Timeframe {
     pub fn get_current_yearweek(&self) -> YearWeek {
         self._current_yearweek
     }
+
+    pub fn get_current_month(&self)  -> u32 {
+        return NaiveDate::from_isoywd(self._current_yearweek._year, self._current_yearweek._week, Weekday::Mon).month()
+    }
+
 
 } 
 
@@ -120,7 +142,12 @@ mod test {
         let year_week_2 = YearWeek::new(2010, 40);
         println!("Difference = {}",year_week_1.difference_weeks(&year_week_2));
         assert_eq!(year_week_1.difference_weeks(&year_week_2) , 559);
+    }
 
+    #[test]
+    fn test_month() {
+        let test_month = Timeframe::new(100, 100);
+        assert_eq!(test_month.get_current_month(), 1)
     }
  
 } 
