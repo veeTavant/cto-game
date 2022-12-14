@@ -242,8 +242,6 @@ mod test {
 
         let mut company: Company = Company::new(100, CompanyDirection::B2B);
         let mut software: Software = Software::new(100, 100, 100, 100);
-        assert_eq!(world.game_ticks(), 1);
+        assert_eq!(world.game_ticks(), 0);
     }
-
-
 }
