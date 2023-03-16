@@ -94,6 +94,7 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   _window.mvaddstr(_window.get_max_y() - 4, 1, "Job Market:");
   _window.mvaddstr(_window.get_max_y() - 3, 1, "Speed Factor:");
 
+  _window.mvaddstr(_window.get_max_y() - 3, second_column_pos, "Year - Month:");
   _window.mvaddstr(_window.get_max_y() - 4, second_column_pos, "Year - Week:");
   _window.mvaddstr(_window.get_max_y() - 5, second_column_pos, "Ticks per Week:");
   _window.mvaddstr(_window.get_max_y() - 6, second_column_pos, "Game Ticks:");
@@ -107,7 +108,8 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   _window.mvaddstr(_window.get_max_y() - 3, first_column_results_pos, _world.speed().to_string());
 
 
-  _window.mvaddstr(_window.get_max_y() - 4, second_column_results_pos, format!("{:>7}", _world.game_year_month()));
+  _window.mvaddstr(_window.get_max_y() - 3, second_column_results_pos, format!("{}-{:>2} ({})", _world.game_year(), _world.game_month(), _world.game_week()));
+  _window.mvaddstr(_window.get_max_y() - 4, second_column_results_pos, format!("{:>7}", _world.game_year_week()));
   _window.mvaddstr(_window.get_max_y() - 5, second_column_results_pos, _world.ticks_per_week().to_string());
   _window.mvaddstr(_window.get_max_y() - 6, second_column_results_pos, _world.game_ticks().to_string());
   _window.mvaddstr(_window.get_max_y() - 7, second_column_results_pos, _world.get_game_elapse_time().to_string());

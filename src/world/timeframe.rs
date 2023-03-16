@@ -113,6 +113,13 @@ impl Timeframe {
         return NaiveDate::from_isoywd(self._current_yearweek._year, self._current_yearweek._week, Weekday::Mon).month()
     }
 
+    pub fn get_current_year(&self) -> i32 {
+        return self._current_yearweek._year
+    }
+
+    pub fn get_current_week(&self) -> u32 {
+        return self._current_yearweek._week
+    }
 
 } 
 
@@ -147,7 +154,14 @@ mod test {
     #[test]
     fn test_month() {
         let test_month = Timeframe::new(100, 100);
-        assert_eq!(test_month.get_current_month(), 1)
+        assert_eq!(test_month.get_current_month(), 1);
     }
+
+    #[test]
+    fn test_week() {
+        let test_week: Timeframe = Timeframe::new(100, 100);
+        assert_eq!(test_week.get_current_week(), 1);
+    }
+
  
 } 

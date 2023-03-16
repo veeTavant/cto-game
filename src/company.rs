@@ -99,7 +99,7 @@ impl Company {
 
     pub fn get_number_of_employees(&self, employee_type: EmployeeType) -> u16 {
         let mut employees = 0;
-        for (key, val) in self._employees.iter() {
+        for (_key, val) in self._employees.iter() {
             if val.employee_type() == employee_type {
                 employees += 1;
             }
@@ -117,7 +117,7 @@ impl Company {
         let mut payroll_amount :u32 = 0;
 
         // First add it up
-        for (key, val) in self._employees.iter() {
+        for (_key, val) in self._employees.iter() {
             payroll_amount += val.salary()
         }
 

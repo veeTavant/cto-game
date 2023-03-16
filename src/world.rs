@@ -47,7 +47,19 @@ impl World {
         self._timeframe.speed()
     }
 
-    pub fn game_year_month(&self) -> String {
+    pub fn game_year(&self) -> i32 {
+        self._timeframe.get_current_year()
+    }
+
+    pub fn game_week(&self) -> u32 {
+        self._timeframe.get_current_week()
+    }
+
+    pub fn game_month(&self) -> u32 {
+        self._timeframe.get_current_month()
+    }
+
+    pub fn game_year_week(&self) -> String {
         self._timeframe.get_current_yearweek().to_string()
     }
 
@@ -232,16 +244,12 @@ impl World {
 
 #[cfg(test)]
 mod test {
-    use crate::company::CompanyDirection;
     use super::*;
 
     #[test]
     fn time_tests() {
 
-        let mut world = World::new(100, 100, 100, 100, 0);
-
-        let mut company: Company = Company::new(100, CompanyDirection::B2B);
-        let mut software: Software = Software::new(100, 100, 100, 100);
+        let world = World::new(100, 100, 100, 100, 0);
         assert_eq!(world.game_ticks(), 0);
     }
 }
