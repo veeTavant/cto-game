@@ -19,47 +19,52 @@ mod company;
 
 fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &Window) {
 
-  _window.mvaddstr(1, 1, "Employees:");
-  _window.mvaddstr(2, 1, "Developers:");
-  _window.mvaddstr(3, 1, "Testers:");
-  _window.mvaddstr(4, 1, "Administrators:");
-  _window.mvaddstr(5, 1, "Marketers:");
-  _window.mvaddstr(6, 1, "Salespeople:");  
+
+  _window.mvaddstr(1, 1, "Company Direction:");
+  _window.mvaddstr(2, 1, "Employees:");
+  _window.mvaddstr(3, 1, "Developers:");
+  _window.mvaddstr(4, 1, "Testers:");
+  _window.mvaddstr(5, 1, "Administrators:");
+  _window.mvaddstr(6, 1, "Marketers:");
+  _window.mvaddstr(7, 1, "Salespeople:");  
+  _window.mvaddstr(8, 1, "Product Management:");  
+
 
   let mut developers = 0;
   let mut testers = 0;
   let mut administrators = 0;
   let mut marketers = 0;
   let mut salespeople = 0;
+  let mut product = 0;
 
 
   // Count developers
   for (_k, v) in _company.get_employees().iter() {
 
-    if v.employee_type() == EmployeeType::Developer {
-      developers = developers + 1;
-    } else if v.employee_type() == EmployeeType::Administrator {
-      administrators = administrators + 1;
-    } else if v.employee_type() == EmployeeType::Tester {
-      testers = testers + 1;
-    } else if v.employee_type() == EmployeeType::Salesperson {
-      salespeople = salespeople + 1;
-    } else if v.employee_type() == EmployeeType::Marketeer {
-      marketers = marketers + 1;
+    match v.employee_type() {
+
+      EmployeeType::Administrator | EmployeeType::CEO | EmployeeType::FinanceDirector |
+      EmployeeType::Accountant => administrators += 1,
+      EmployeeType::Tester => testers += 1,
+      EmployeeType::Salesperson => salespeople += 1,
+      EmployeeType::Marketeer | EmployeeType::CMO => marketers += 1,
+      EmployeeType::Developer | EmployeeType::CTO => developers += 1,
+      EmployeeType::CPO | EmployeeType::ProductManager | EmployeeType::ProductOwner => product += 1
     }
   }
 
   let first_column_results_pos = 30;
 
   let number_of_employees = _company.get_employees().keys().len().to_string();
-  _window.mvaddstr(1, first_column_results_pos, number_of_employees);
-  _window.mvaddstr(2, first_column_results_pos, developers.to_string());
-  _window.mvaddstr(3, first_column_results_pos, testers.to_string());
-  _window.mvaddstr(4, first_column_results_pos, administrators.to_string());
-  _window.mvaddstr(5, first_column_results_pos, marketers.to_string());
-  _window.mvaddstr(6, first_column_results_pos, salespeople.to_string());
 
-
+  _window.mvaddstr(1, first_column_results_pos, _company.direction().to_string());
+  _window.mvaddstr(2, first_column_results_pos, number_of_employees);
+  _window.mvaddstr(3, first_column_results_pos, developers.to_string());
+  _window.mvaddstr(4, first_column_results_pos, testers.to_string());
+  _window.mvaddstr(5, first_column_results_pos, administrators.to_string());
+  _window.mvaddstr(6, first_column_results_pos, marketers.to_string());
+  _window.mvaddstr(7, first_column_results_pos, salespeople.to_string());
+  _window.mvaddstr(8, first_column_results_pos, product.to_string());
 
   let second_column_pos  = _window.get_max_x() / 2;
   _window.mvaddstr(1, second_column_pos  , "Cash In Bank:");
@@ -70,6 +75,7 @@ fn draw_hud(_company: &Company, _software: &Software, _world: &World, _window: &
   _window.mvaddstr(6, second_column_pos  , "Code Complexity:");
   _window.mvaddstr(7, second_column_pos  , "Dev Capacity:");
   _window.mvaddstr(8, second_column_pos  , "Quality:");
+
 
   let second_column_results_pos = second_column_pos + 30;
   _window.mvaddstr(1, second_column_results_pos, format!("{:>7}", _company.cash_in_bank().to_string()));
@@ -188,6 +194,8 @@ fn main() {
             window.addch(c);
 
           }
+          Some(Input::KeyUp) => company.add_cash(1000),
+          Some(Input::KeyDown) => company.remove_cash(1000),
           Some(Input::KeyDC) => break,
           Some(input) => {
               window.addstr(&format!("{:?}", input));

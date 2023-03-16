@@ -87,10 +87,10 @@ impl Software {
             if self._lines_of_code > manageable_codebase_limit {
                 //let recalculation_factor = 0.0f32;
                 
-                if (number_of_devs > number_of_testers) {
+                if number_of_devs > number_of_testers {
                     let modifier = ( ( (number_of_devs - number_of_testers) as f32 ) / 3.0f32 ) as u16;
 
-                    if (modifier < self._quality) {
+                    if modifier < self._quality {
                         self._quality -= modifier;
                     } else {
                         self._quality = 0;
@@ -99,7 +99,7 @@ impl Software {
                 } else { // more testers - improve quality
                     let modifier = ( ( (number_of_testers - number_of_devs) as f32 ) / 3.0f32 ) as u16;
 
-                    if (self._quality + modifier < 100) {
+                    if self._quality + modifier < 100 {
                         self._quality += modifier;
                     } else {
                         self._quality = 100;

@@ -164,10 +164,26 @@ impl World {
                 // What's the age of the software
                 //
                 if software.market_popularity(&self._timeframe.get_current_yearweek()) > rand_market {
-                    println!("Gaining customers users");
+                    println!("Gaining customers / users");
                     software.add_customers(1, false);
                 }
+            } else {
+
+                let mut rng = rand::thread_rng();
+                let rand_number: f32 = rng.gen();
+                let rand_market =( rand_number * 100.0f32 ) as u16; // generates a number between 0 - 100
+
+                // What's the age of the software
+                //
+                if software.market_popularity(&self._timeframe.get_current_yearweek()) < rand_market {
+                    println!("Losing customers / users");
+                    software.remove_customers(1);
+                }
+
+
             }
+
+            
         }
 
 

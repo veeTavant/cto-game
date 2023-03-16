@@ -1,5 +1,6 @@
 use crate::employee::{Employee, EmployeeType};
 use std::collections::HashMap;
+use std::fmt;
 //use super::Software;
 
 
@@ -21,29 +22,35 @@ pub enum CompanyDirection {
     Whatever */
 }
 
+impl fmt::Display for CompanyDirection {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
 pub enum MarketingStrategy {
-    Organic,
+    Organic /* ,
     Campaign,
     Direct,
-    Content
+    Content*/
 }
 
 pub enum GrowthStrategy {
-    None,
-    Focussed,
-    Aggressive
+    Focussed
+/*  None,
+    Aggressive*/
 }
 
 pub enum Ownership {
-    Private,
-    Public
+    Private /* ,
+    Public */
 }
 
 pub enum HiringStrategy {
-    Passive,
+    Passive /* ,
     Opportunistic,
     Aggressive,
-    Frozen
+    Frozen */
 }
 
 
@@ -82,7 +89,13 @@ impl Company {
     }
 
     pub fn remove_cash(&mut self, cash :u32) {
-        self._cash_in_bank -= cash;
+
+        if cash > self._cash_in_bank {
+            self._cash_in_bank -= cash;
+        } else {
+            self._cash_in_bank = 0;
+        }
+
     }
 
     pub fn add_cash(&mut self, cash :u32) {
@@ -143,7 +156,7 @@ impl Company {
         let mut developers = 0;
 
 
-        for (key, val) in self._employees.iter() {
+        for (_key, val) in self._employees.iter() {
             if val.employee_type() == EmployeeType::Developer {
                 developers += 1;
                 developer_skills += val.efficiency();        
