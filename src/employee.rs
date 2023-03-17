@@ -151,5 +151,12 @@ mod test {
         assert_eq!(employee.id(), 5);
     }
 
+    #[test]
+    fn employee_talent_test() {
+        let mut employee = Employee::new(EmployeeType::Developer, 5, "Developer 2".to_string(), 23, 35, 89, 77);
+        employee.add_talent(10);
+        assert_eq!(employee.talent(), 87);
+    }
+
 
 }
