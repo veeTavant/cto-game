@@ -191,6 +191,10 @@ fn main() {
               //command_string = String::from("QUITTING");
               break;
             }
+
+            if c == 'b' {
+              company.cycle_direction();
+            }
             window.addch(c);
 
           }

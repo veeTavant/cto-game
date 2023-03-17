@@ -1,4 +1,5 @@
 use crate::employee::{Employee, EmployeeType};
+//use std::arch::x86_64::_MM_FROUND_CUR_DIRECTION;
 use std::collections::HashMap;
 use std::fmt;
 //use super::Software;
@@ -86,6 +87,16 @@ impl Company {
     
     pub fn direction(&self) -> CompanyDirection {
         self._direction
+    }
+
+    // Cycle through the types of working
+    pub fn cycle_direction(&mut self) 
+    {
+        if self._direction == CompanyDirection::B2B {
+            self._direction = CompanyDirection::B2C
+        } else {
+            self._direction = CompanyDirection::B2B
+        }
     }
 
     // Do we need to zero out or instead just go negative?
