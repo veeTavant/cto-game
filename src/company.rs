@@ -88,9 +88,11 @@ impl Company {
         self._direction
     }
 
+    // Do we need to zero out or instead just go negative?
+    //
     pub fn remove_cash(&mut self, cash :u32) {
 
-        if cash > self._cash_in_bank {
+        if cash < self._cash_in_bank {
             self._cash_in_bank -= cash;
         } else {
             self._cash_in_bank = 0;
