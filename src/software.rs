@@ -228,15 +228,7 @@ impl Software {
 
         self.recalculate_code_complexity(number_of_devs, dev_focus);
     }
-/* 
-    pub fn refactor(&mut self) {
-
-    }
-
-    pub fn bug_fix(&mut self) {
-
-    }
-*/
+    
     // Try and keep dev_focus 0 - 100
     //
     fn recalculate_code_complexity(&mut self, number_of_devs: u16, _dev_focus: u16) {

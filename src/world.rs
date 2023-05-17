@@ -204,7 +204,6 @@ impl World {
     }
 
 
-
         // What is the factor of usefulness for software? software.usability_factor()
         // 
         // Features and Ease of Use
